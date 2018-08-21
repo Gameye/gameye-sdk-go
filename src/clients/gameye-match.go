@@ -2,7 +2,6 @@ package clients
 
 import (
 	"github.com/Gameye/gameye-sdk-go/src/models"
-	"github.com/Gameye/gameye-sdk-go/src/utils"
 )
 
 type StartMatchPayload struct {
@@ -64,7 +63,11 @@ func (client GameyeClient) QueryMatch() (
 	err error,
 	state *models.MatchQueryState,
 ) {
-	client.query("match", &utils.EmptyStruct)
+	err = client.query(
+		"match",
+		map[string]string{},
+		state,
+	)
 	return
 }
 
@@ -75,6 +78,10 @@ func (client GameyeClient) SubscribeMatch() (
 	err error,
 	state *models.MatchQueryState,
 ) {
-	client.subscribe("match", &utils.EmptyStruct)
+	err = client.subscribe(
+		"match",
+		map[string]string{},
+		state,
+	)
 	return
 }
