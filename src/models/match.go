@@ -4,7 +4,7 @@ type MatchQueryState struct {
 	Match MatchQueryMatchIndex
 }
 
-type MatchQueryMatchIndex = map[string]*MatchQueryMatchItem
+type MatchQueryMatchIndex = map[string]MatchQueryMatchItem
 
 type MatchQueryMatchItem struct {
 	MatchKey    string
