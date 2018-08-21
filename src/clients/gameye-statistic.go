@@ -18,9 +18,13 @@ func (client GameyeClient) QueryStatistic(
 	err error,
 	state *models.StatisticQueryState,
 ) {
-	client.query("statistic", StatisticQueryArg{
-		matchKey,
-	})
+	err = client.query(
+		"statistic",
+		map[string]string{
+			"matchKey": matchKey,
+		},
+		state,
+	)
 	return
 }
 
@@ -34,8 +38,12 @@ func (client GameyeClient) SubscribeStatistic(
 	err error,
 	state *models.StatisticQueryState,
 ) {
-	client.subscribe("statistic", StatisticQueryArg{
-		matchKey,
-	})
+	err = client.subscribe(
+		"statistic",
+		map[string]string{
+			"matchKey": matchKey,
+		},
+		state,
+	)
 	return
 }

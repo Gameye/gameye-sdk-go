@@ -2,7 +2,6 @@ package clients
 
 import (
 	"github.com/Gameye/gameye-sdk-go/src/models"
-	"github.com/Gameye/gameye-sdk-go/src/utils"
 )
 
 /**
@@ -12,7 +11,11 @@ func (client GameyeClient) QueryGame() (
 	err error,
 	state *models.GameQueryState,
 ) {
-	client.query("game", &utils.EmptyStruct)
+	err = client.query(
+		"game",
+		map[string]string{},
+		state,
+	)
 	return
 }
 
@@ -23,6 +26,10 @@ func (client GameyeClient) SubscribeGame() (
 	err error,
 	state *models.GameQueryState,
 ) {
-	client.subscribe("game", &utils.EmptyStruct)
+	err = client.subscribe(
+		"game",
+		map[string]string{},
+		state,
+	)
 	return
 }
