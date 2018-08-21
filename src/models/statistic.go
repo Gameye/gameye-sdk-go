@@ -1,10 +1,17 @@
 package models
 
 type StatisticQueryState struct {
-	statistic AnyStatisticState
+	Statistic AnyStatisticState
 }
 
-type AnyStatisticState = interface{}
+type AnyStatisticState = struct {
+	Start          int
+	Stop           int
+	StartedRounds  int
+	FinishedRounds int
+	Player         map[string]PlayerModel
+	Team           map[string]int
+}
 
 type StartStopState struct {
 	Start int
@@ -17,7 +24,7 @@ type RoundState struct {
 }
 
 type PlayerContainerState struct {
-	Player map[string]*PlayerModel
+	Player map[string]PlayerModel
 }
 
 type PlayerModel struct {
@@ -29,7 +36,7 @@ type PlayerModel struct {
 }
 
 type TeamContainerState struct {
-	Team map[string]int
+	Team map[string]TeamModel
 }
 
 type TeamModel struct {

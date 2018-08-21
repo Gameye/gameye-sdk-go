@@ -4,7 +4,7 @@ type TemplateQueryState struct {
 	Template TemplateQueryArgIndex
 }
 
-type TemplateQueryArgIndex = map[string]*TemplateQueryArgItem
+type TemplateQueryArgIndex = map[string]TemplateQueryArgItem
 
 type TemplateQueryArgItem struct {
 	TemplateKey string

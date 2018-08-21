@@ -5,9 +5,9 @@ type GameQueryState struct {
 	Location GameQueryLocationIndex
 }
 
-type GameQueryGameIndex = map[string]*GameQueryGameItem
+type GameQueryGameIndex = map[string]GameQueryGameItem
 
-type GameQueryLocationIndex = map[string]*GameQueryLocationItem
+type GameQueryLocationIndex = map[string]GameQueryLocationItem
 
 type GameQueryGameItem struct {
 	GameKey  string
