@@ -23,7 +23,7 @@ jobs:
     steps:
       - checkout
       - run: go get golang.org/x/lint/golint
-      - run: ~/go/bin/golint ./clients ./models ./selectors ./test ./utils
+      - run: ~/go/bin/golint -set-exit-status ./clients ./models ./selectors ./test ./utils
 
   spec:
     docker: *docker_golang
