@@ -23,24 +23,27 @@ type QuerySubscription interface {
 }
 
 func NewQuerySubscription(
-	reader *bufio.Reader,
+	reader io.ReadCloser,
 	cancelFunc func(),
 ) QuerySubscription {
 	return &querySubscription{
 		reader,
 		cancelFunc,
 		make(map[string]interface{}),
+		bufio.NewReader(reader),
 	}
 }
 
 type querySubscription struct {
-	reader     *bufio.Reader
+	reader     io.ReadCloser
 	cancelFunc func()
 	lastState  map[string]interface{}
+	lineReader *bufio.Reader
 }
 
 func (qs querySubscription) Cancel() {
 	qs.cancelFunc()
+	qs.reader.Close()
 }
 
 func (qs querySubscription) NextState() (
@@ -50,7 +53,7 @@ func (qs querySubscription) NextState() (
 	state = qs.lastState
 	for {
 		var line string
-		line, err = qs.reader.ReadString('\n')
+		line, err = qs.lineReader.ReadString('\n')
 		if err == io.EOF {
 			return
 		}

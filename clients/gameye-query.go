@@ -41,6 +41,7 @@ func (client GameyeClient) query(
 	if err != nil {
 		return
 	}
+	defer res.Body.Close()
 	if res.StatusCode != 200 {
 		err = ErrUnexpectedStatus
 		return

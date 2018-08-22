@@ -1,6 +1,7 @@
 package test
 
 import (
+	"net"
 	"net/http"
 	"testing"
 
@@ -13,14 +14,20 @@ func TestListenAndServeApiTestServer(t *testing.T) {
 		assert.NoError(t, err)
 	}()
 
-	cancelChannel := make(chan struct{})
-	go ListenAndServeApiTestServer(
-		nil, nil, cancelChannel,
+	mux := CreateApiTestServerMux(
+		nil, nil,
 	)
-	defer close(cancelChannel)
+
+	var listener net.Listener
+	listener, err = net.Listen("tcp", ":8080")
+	if err != nil {
+		return
+	}
+	defer listener.Close()
+	go http.Serve(listener, mux)
 
 	var res *http.Response
-	res, err = http.Get("http://localhost:8081/noop")
+	res, err = http.Get("http://localhost:8080/noop")
 	if err != nil {
 		return
 	}

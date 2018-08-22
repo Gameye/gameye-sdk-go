@@ -2,8 +2,6 @@ package test
 
 import (
 	"encoding/json"
-	"fmt"
-	"net"
 	"net/http"
 )
 
@@ -12,15 +10,12 @@ type QueryPatch struct {
 	Value interface{} `json:"value"`
 }
 
-func ListenAndServeApiTestServer(
+func CreateApiTestServerMux(
 	state map[string]interface{},
 	patchChannel chan QueryPatch,
-	cancelChannel chan struct{},
 ) (
-	err error,
+	mux *http.ServeMux,
 ) {
-	port := 8081
-
 	handleNoop := func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusNoContent)
 	}
@@ -30,6 +25,7 @@ func ListenAndServeApiTestServer(
 	}
 
 	handleFetch := func(w http.ResponseWriter, r *http.Request) {
+		var err error
 		accept := r.Header.Get("Accept")
 		switch accept {
 		case "application/json":
@@ -64,28 +60,10 @@ func ListenAndServeApiTestServer(
 		}
 	}
 
-	mux := http.NewServeMux()
+	mux = http.NewServeMux()
 	mux.HandleFunc("/noop", handleNoop)
 	mux.HandleFunc("/action/noop", handleAction)
 	mux.HandleFunc("/fetch/noop", handleFetch)
-
-	var listener net.Listener
-	listener, err = net.Listen("tcp", fmt.Sprintf(":%d", port))
-	if err != nil {
-		return
-	}
-
-	go func() {
-		for range cancelChannel {
-		}
-		listener.Close()
-	}()
-
-	err = http.Serve(listener, mux)
-	if err != nil {
-		listener.Close()
-		return
-	}
 
 	return
 }

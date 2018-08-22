@@ -1,6 +1,8 @@
 package clients
 
 import (
+	"net"
+	"net/http"
 	"testing"
 
 	"github.com/Gameye/gameye-sdk-go/test"
@@ -13,15 +15,21 @@ func TestGameyeClient_subscribe(t *testing.T) {
 		assert.NoError(t, err)
 	}()
 
-	cancelChannel := make(chan struct{})
 	patchChannel := make(chan test.QueryPatch, 1)
-	go test.ListenAndServeApiTestServer(
-		nil, patchChannel, cancelChannel,
+	mux := test.CreateApiTestServerMux(
+		nil, patchChannel,
 	)
-	defer close(cancelChannel)
+
+	var listener net.Listener
+	listener, err = net.Listen("tcp", ":8083")
+	if err != nil {
+		return
+	}
+	defer listener.Close()
+	go http.Serve(listener, mux)
 
 	client := NewGameyeClient(GameyeClientConfig{
-		Endpoint: "http://localhost:8081",
+		Endpoint: "http://localhost:8083",
 		Token:    "",
 	})
 

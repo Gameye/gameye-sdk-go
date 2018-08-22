@@ -1,7 +1,6 @@
 package clients
 
 import (
-	"bufio"
 	"context"
 	"fmt"
 	"net/http"
@@ -57,9 +56,8 @@ func (client GameyeClient) subscribe(
 		return
 	}
 
-	reader := bufio.NewReader(res.Body)
 	qs = NewQuerySubscription(
-		reader,
+		res.Body,
 		cancelRequest,
 	)
 
