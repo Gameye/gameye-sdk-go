@@ -33,17 +33,29 @@ func (client GameyeClient) QueryStatistic(
  * @param matchKey identifier of the match
  */
 func (client GameyeClient) SubscribeStatistic(
+	cancelChannel <-chan struct{},
 	matchKey string,
 ) (
 	err error,
-	state *models.StatisticQueryState,
+	stateChannel chan<- *models.StatisticQueryState,
 ) {
-	err = client.subscribe(
+	var state *models.StatisticQueryState
+	var anyStateChannel <-chan interface{}
+
+	anyStateChannel, err = client.subscribe(
 		"statistic",
 		map[string]string{
 			"matchKey": matchKey,
 		},
 		state,
+		cancelChannel,
 	)
+
+	go func() {
+		for anyState := range anyStateChannel {
+			stateChannel <- anyState.(*models.StatisticQueryState)
+		}
+	}()
+
 	return
 }

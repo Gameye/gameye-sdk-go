@@ -33,17 +33,29 @@ func (client GameyeClient) QueryTemplate(
  * @param gameKey identifier of the game
  */
 func (client GameyeClient) SubscribeTemplate(
+	cancelChannel <-chan struct{},
 	gameKey string,
 ) (
 	err error,
-	state *models.TemplateQueryState,
+	stateChannel chan<- *models.TemplateQueryState,
 ) {
-	err = client.subscribe(
+	var state *models.TemplateQueryState
+	var anyStateChannel <-chan interface{}
+
+	anyStateChannel, err = client.subscribe(
 		"template",
 		map[string]string{
 			"gameKey": gameKey,
 		},
 		state,
+		cancelChannel,
 	)
+
+	go func() {
+		for anyState := range anyStateChannel {
+			stateChannel <- anyState.(*models.TemplateQueryState)
+		}
+	}()
+
 	return
 }
