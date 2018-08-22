@@ -13,7 +13,7 @@ func (client GameyeClient) QueryGame() (
 ) {
 	err = client.query(
 		"game",
-		map[string]string{},
+		nil,
 		state,
 	)
 	return
@@ -22,14 +22,27 @@ func (client GameyeClient) QueryGame() (
 /**
  * Subscribe to the game state
  */
-func (client GameyeClient) SubscribeGame() (
+func (client GameyeClient) SubscribeGame(
+	cancelChannel <-chan struct{},
+) (
 	err error,
-	state *models.GameQueryState,
+	stateChannel chan<- *models.GameQueryState,
 ) {
-	err = client.subscribe(
+	var state *models.GameQueryState
+	var anyStateChannel <-chan interface{}
+
+	anyStateChannel, err = client.subscribe(
 		"game",
-		map[string]string{},
+		nil,
 		state,
+		cancelChannel,
 	)
+
+	go func() {
+		for anyState := range anyStateChannel {
+			stateChannel <- anyState.(*models.GameQueryState)
+		}
+	}()
+
 	return
 }

@@ -65,7 +65,7 @@ func (client GameyeClient) QueryMatch() (
 ) {
 	err = client.query(
 		"match",
-		map[string]string{},
+		nil,
 		state,
 	)
 	return
@@ -74,14 +74,27 @@ func (client GameyeClient) QueryMatch() (
 /**
  * Subscribe to the match state
  */
-func (client GameyeClient) SubscribeMatch() (
+func (client GameyeClient) SubscribeMatch(
+	cancelChannel <-chan struct{},
+) (
 	err error,
-	state *models.MatchQueryState,
+	stateChannel chan<- *models.MatchQueryState,
 ) {
-	err = client.subscribe(
+	var state *models.MatchQueryState
+	var anyStateChannel <-chan interface{}
+
+	anyStateChannel, err = client.subscribe(
 		"match",
-		map[string]string{},
+		nil,
 		state,
+		cancelChannel,
 	)
+
+	go func() {
+		for anyState := range anyStateChannel {
+			stateChannel <- anyState.(*models.MatchQueryState)
+		}
+	}()
+
 	return
 }

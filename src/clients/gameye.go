@@ -75,8 +75,10 @@ func (client GameyeClient) query(
 	err error,
 ) {
 	var query url.Values
-	for key, value := range arg {
-		query.Add(key, value)
+	if arg != nil {
+		for key, value := range arg {
+			query.Add(key, value)
+		}
 	}
 	querystring := query.Encode()
 	if len(querystring) > 0 {
@@ -117,12 +119,16 @@ func (client GameyeClient) subscribe(
 	name string,
 	arg map[string]string,
 	state interface{},
-	stateChannel chan<- interface{},
 	cancelChannel <-chan struct{},
-) (err error) {
+) (
+	stateChannel <-chan interface{},
+	err error,
+) {
 	var query url.Values
-	for key, value := range arg {
-		query.Add(key, value)
+	if arg != nil {
+		for key, value := range arg {
+			query.Add(key, value)
+		}
 	}
 	querystring := query.Encode()
 	if len(querystring) > 0 {
@@ -155,6 +161,8 @@ func (client GameyeClient) subscribe(
 	if err != nil {
 		return
 	}
+
+	stateChannel = make(chan interface{})
 
 	<-cancelChannel
 
