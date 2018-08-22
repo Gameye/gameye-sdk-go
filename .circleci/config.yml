@@ -23,7 +23,7 @@ jobs:
     steps:
       - checkout
       - run: go get golang.org/x/lint/golint
-      - run: ~/go/bin/golint
+      - run: ~/go/bin/golint ./...
 
   spec:
     docker: *docker_golang
