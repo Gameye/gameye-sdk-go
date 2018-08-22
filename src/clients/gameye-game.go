@@ -2,6 +2,7 @@ package clients
 
 import (
 	"github.com/Gameye/gameye-sdk-go/src/models"
+	"github.com/mitchellh/mapstructure"
 )
 
 /**
@@ -11,38 +12,67 @@ func (client GameyeClient) QueryGame() (
 	err error,
 	state *models.GameQueryState,
 ) {
-	err = client.query(
+	var anyState map[string]interface{}
+	anyState, err = client.query(
 		"game",
 		nil,
-		state,
 	)
+	if err != nil {
+		return
+	}
+
+	err = mapstructure.Decode(anyState, state)
+	if err != nil {
+		return
+	}
+
 	return
 }
 
 /**
  * Subscribe to the game state
  */
-func (client GameyeClient) SubscribeGame(
-	cancelChannel <-chan struct{},
-) (
+func (client GameyeClient) SubscribeGame() (
 	err error,
-	stateChannel chan<- models.GameQueryState,
+	subscription *GameQuerySubscription,
 ) {
-	var state *models.GameQueryState
-	var anyStateChannel <-chan interface{}
-
-	anyStateChannel, err = client.subscribe(
+	var qs QuerySubscription
+	qs, err = client.subscribe(
 		"game",
 		nil,
-		state,
-		cancelChannel,
 	)
+	if err != nil {
+		return
+	}
 
-	go func() {
-		for anyState := range anyStateChannel {
-			stateChannel <- anyState.(models.GameQueryState)
-		}
-	}()
+	subscription = &GameQuerySubscription{
+		qs,
+	}
+
+	return
+}
+
+type GameQuerySubscription struct {
+	qs QuerySubscription
+}
+
+func (s *GameQuerySubscription) Cancel() {
+	s.qs.Cancel()
+}
+
+func (s *GameQuerySubscription) NextState() (
+	state *models.GameQueryState,
+	err error,
+) {
+	var anyState map[string]interface{}
+	anyState, err = s.qs.NextState()
+	if err != nil {
+		return
+	}
+	err = mapstructure.Decode(anyState, state)
+	if err != nil {
+		return
+	}
 
 	return
 }

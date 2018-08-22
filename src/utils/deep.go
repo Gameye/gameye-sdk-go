@@ -12,7 +12,7 @@ func SetIn(
 		return
 	}
 
-	target = map[string]interface{}{}
+	target = make(map[string]interface{}, len(source))
 	for key, value := range source {
 		target[key] = value
 	}
@@ -25,7 +25,7 @@ func SetIn(
 	for keyIndex < parentPathLength {
 		key := path[keyIndex]
 
-		targetChild := map[string]interface{}{}
+		targetChild := make(map[string]interface{})
 		if targetParent[key] != nil &&
 			sourceParent != nil &&
 			sourceParent[key] == targetParent[key] {
@@ -33,7 +33,6 @@ func SetIn(
 			for key, value := range targetParent[key].(map[string]interface{}) {
 				targetChild[key] = value
 			}
-			targetParent[key] = targetParent[key]
 		}
 
 		targetParent[key] = targetChild
