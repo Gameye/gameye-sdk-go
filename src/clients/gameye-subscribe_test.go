@@ -30,6 +30,7 @@ func TestGameyeClient_subscribe(t *testing.T) {
 	if err != nil {
 		return
 	}
+	defer qs.Cancel()
 
 	{
 		expected := map[string]interface{}{
@@ -69,5 +70,4 @@ func TestGameyeClient_subscribe(t *testing.T) {
 		assert.Equal(t, expected, actual)
 	}
 
-	qs.Cancel()
 }
