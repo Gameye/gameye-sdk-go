@@ -3,7 +3,7 @@ package clients
 import (
 	"testing"
 
-	"github.com/Gameye/gameye-sdk-go/src/test"
+	"github.com/Gameye/gameye-sdk-go/test"
 	"github.com/stretchr/testify/assert"
 )
 

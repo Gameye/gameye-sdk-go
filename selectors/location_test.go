@@ -5,7 +5,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/Gameye/gameye-sdk-go/src/models"
+	"github.com/Gameye/gameye-sdk-go/models"
 )
 
 func TestSelectLocationListForGame(t *testing.T) {

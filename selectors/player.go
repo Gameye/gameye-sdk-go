@@ -1,6 +1,6 @@
 package selectors
 
-import "github.com/Gameye/gameye-sdk-go/src/models"
+import "github.com/Gameye/gameye-sdk-go/models"
 
 type PlayerItem = models.PlayerModel
 

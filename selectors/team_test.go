@@ -3,7 +3,7 @@ package selectors
 import (
 	"testing"
 
-	"github.com/Gameye/gameye-sdk-go/src/models"
+	"github.com/Gameye/gameye-sdk-go/models"
 	"github.com/stretchr/testify/assert"
 )
 

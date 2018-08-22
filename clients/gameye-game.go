@@ -1,7 +1,7 @@
 package clients
 
 import (
-	"github.com/Gameye/gameye-sdk-go/src/models"
+	"github.com/Gameye/gameye-sdk-go/models"
 	"github.com/mitchellh/mapstructure"
 )
 

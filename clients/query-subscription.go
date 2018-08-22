@@ -6,7 +6,7 @@ import (
 	"io"
 	"strings"
 
-	"github.com/Gameye/gameye-sdk-go/src/utils"
+	"github.com/Gameye/gameye-sdk-go/utils"
 )
 
 type queryPatch struct {
