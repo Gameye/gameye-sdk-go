@@ -22,8 +22,6 @@ jobs:
     working_directory: /home/circleci/go/src/github.com/Gameye/gameye-sdk-node
     steps:
       - checkout
-      - attach_workspace: &attach_workspace
-          at: .
       - run: go get golang.org/x/lint/golint
       - run: ~/go/bin/golint
 
@@ -33,6 +31,7 @@ jobs:
       GOPATH: /home/circleci/go
     working_directory: /home/circleci/go/src/github.com/Gameye/gameye-sdk-node
     steps:
+      - checkout
       - attach_workspace: *attach_workspace
       - run: go get github.com/jstemmer/go-junit-report
       - run: mkdir -p /tmp/test-results
