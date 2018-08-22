@@ -5,12 +5,18 @@ import (
 	"net/http"
 )
 
+/*
+QueryPatch is used to update a state
+*/
 type QueryPatch struct {
 	Path  []string    `json:"path"`
 	Value interface{} `json:"value"`
 }
 
-func CreateApiTestServerMux(
+/*
+CreateAPITestServerMux creates the ServeMux for a api test server
+*/
+func CreateAPITestServerMux(
 	state map[string]interface{},
 	patchChannel chan QueryPatch,
 ) (

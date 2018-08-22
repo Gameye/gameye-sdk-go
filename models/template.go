@@ -34,21 +34,39 @@ func CreateTemplateQueryState(anyState *map[string]interface{}) (
 	return
 }
 
+/*
+TemplateQueryState is data coming from the api
+*/
 type TemplateQueryState struct {
 	Template TemplateQueryArgIndex
 }
 
+/*
+TemplateQueryArgIndex is data coming from the api
+*/
 type TemplateQueryArgIndex = map[string]*TemplateQueryArgItem
 
+/*
+TemplateQueryArgItem is data coming from the api
+*/
 type TemplateQueryArgItem struct {
 	TemplateKey string    `mapstructure:"templateKey"`
 	Arg         ArgConfig `mapstructure:"arg"`
 }
 
+/*
+ArgConfig is data coming from the api
+*/
 type ArgConfig = []ArgConfigItem
 
+/*
+ArgConfigItem is data coming from the api
+*/
 type ArgConfigItem = interface{}
 
+/*
+NumberArgConfigItem is data coming from the api
+*/
 type NumberArgConfigItem struct {
 	// type "number"
 	Name             string `mapstructure:"name"`
@@ -59,6 +77,10 @@ type NumberArgConfigItem struct {
 	MaximumExclusive bool   `mapstructure:"maximumExclusive"`
 	Option           []int  `mapstructure:"option"`
 }
+
+/*
+StringArgConfigItem is data coming from the api
+*/
 type StringArgConfigItem struct {
 	// type "string"
 	Name               string   `mapstructure:"name"`
@@ -68,6 +90,9 @@ type StringArgConfigItem struct {
 	Option             []string `mapstructure:"option"`
 }
 
+/*
+TemplateStateMock is mock data
+*/
 var TemplateStateMock = TemplateQueryState{
 	Template: TemplateQueryArgIndex{
 		"t1": &TemplateQueryArgItem{
@@ -96,6 +121,9 @@ var TemplateStateMock = TemplateQueryState{
 	},
 }
 
+/*
+TemplateStateJSONMock is json mock data
+*/
 var TemplateStateJSONMock = `{
     "template": {
         "t1": {

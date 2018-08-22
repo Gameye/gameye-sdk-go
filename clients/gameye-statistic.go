@@ -4,19 +4,15 @@ import (
 	"github.com/Gameye/gameye-sdk-go/models"
 )
 
-// type StatisticQueryArg struct {
-// 	MatchKey string
-// }
-
-/**
- * Fetch statistic state
- * @param matchKey identifier of the match
- */
+/*
+QueryStatistic will fetch statistic state
+@param matchKey identifier of the match
+*/
 func (client GameyeClient) QueryStatistic(
 	matchKey string,
 ) (
-	err error,
 	state *models.StatisticQueryState,
+	err error,
 ) {
 	var anyState map[string]interface{}
 
@@ -38,17 +34,17 @@ func (client GameyeClient) QueryStatistic(
 	return
 }
 
-/**
- * Subscribe to statistic state
- * @param matchKey identifier of the match
- */
+/*
+SubscribeStatistic will subscribe to statistic state
+@param matchKey identifier of the match
+*/
 func (client GameyeClient) SubscribeStatistic(
 	matchKey string,
 ) (
-	err error,
 	subscription *StatisticQuerySubscription,
+	err error,
 ) {
-	var qs QuerySubscription
+	var qs *querySubscription
 	qs, err = client.subscribe(
 		"statistic",
 		map[string]string{
@@ -67,14 +63,23 @@ func (client GameyeClient) SubscribeStatistic(
 	return
 }
 
+/*
+StatisticQuerySubscription is a subscription to the statistic state
+*/
 type StatisticQuerySubscription struct {
-	qs QuerySubscription
+	qs *querySubscription
 }
 
+/*
+Cancel will end and cleanup the subscription
+*/
 func (s *StatisticQuerySubscription) Cancel() {
 	s.qs.Cancel()
 }
 
+/*
+NextState will return the next state
+*/
 func (s *StatisticQuerySubscription) NextState() (
 	state *models.StatisticQueryState,
 	err error,

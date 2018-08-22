@@ -4,19 +4,15 @@ import (
 	"github.com/Gameye/gameye-sdk-go/models"
 )
 
-// type TemplateQueryArg struct {
-// 	GameKey string
-// }
-
-/**
- * Fetch template state
- * @param gameKey identifier of the game
- */
+/*
+QueryTemplate will fetch template state
+@param gameKey identifier of the game
+*/
 func (client GameyeClient) QueryTemplate(
 	gameKey string,
 ) (
-	err error,
 	state *models.TemplateQueryState,
+	err error,
 ) {
 	var anyState map[string]interface{}
 
@@ -38,17 +34,17 @@ func (client GameyeClient) QueryTemplate(
 	return
 }
 
-/**
- * Subscribe to template state
- * @param gameKey identifier of the game
- */
+/*
+SubscribeTemplate will subscribe to template state
+@param gameKey identifier of the game
+*/
 func (client GameyeClient) SubscribeTemplate(
 	gameKey string,
 ) (
-	err error,
 	subscription *TemplateQuerySubscription,
+	err error,
 ) {
-	var qs QuerySubscription
+	var qs *querySubscription
 	qs, err = client.subscribe(
 		"template",
 		map[string]string{
@@ -66,14 +62,23 @@ func (client GameyeClient) SubscribeTemplate(
 	return
 }
 
+/*
+TemplateQuerySubscription is a subscription to the template state
+*/
 type TemplateQuerySubscription struct {
-	qs QuerySubscription
+	qs *querySubscription
 }
 
+/*
+Cancel will end and cleanup the subscription
+*/
 func (s *TemplateQuerySubscription) Cancel() {
 	s.qs.Cancel()
 }
 
+/*
+NextState will return the next state
+*/
 func (s *TemplateQuerySubscription) NextState() (
 	state *models.TemplateQueryState,
 	err error,

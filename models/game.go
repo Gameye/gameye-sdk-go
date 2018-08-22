@@ -15,23 +15,42 @@ func CreateGameQueryState(anyState *map[string]interface{}) (
 	return
 }
 
+/*
+GameQueryState is data coming from the api
+*/
 type GameQueryState struct {
 	Game     GameQueryGameIndex     `mapstructure:"game"`
 	Location GameQueryLocationIndex `mapstructure:"location"`
 }
 
+/*
+GameQueryGameIndex is data coming from the api
+*/
 type GameQueryGameIndex = map[string]*GameQueryGameItem
 
+/*
+GameQueryLocationIndex is data coming from the api
+*/
 type GameQueryLocationIndex = map[string]*GameQueryLocationItem
 
+/*
+GameQueryGameItem is data coming from the api
+*/
 type GameQueryGameItem struct {
 	GameKey  string          `mapstructure:"gameKey"`
 	Location map[string]bool `mapstructure:"location"`
 }
+
+/*
+GameQueryLocationItem is data coming from the api
+*/
 type GameQueryLocationItem struct {
 	LocationKey string `mapstructure:"locationKey"`
 }
 
+/*
+GameStateMock is mock data, useful for testing
+*/
 var GameStateMock = GameQueryState{
 	Game: GameQueryGameIndex{
 		"csgo": &GameQueryGameItem{GameKey: "csgo", Location: map[string]bool{}},
@@ -52,6 +71,9 @@ var GameStateMock = GameQueryState{
 	},
 }
 
+/*
+GameStateJSONMock is json mock data, useful for testing
+*/
 var GameStateJSONMock = `{
     "game": {
         "csgo": { "gameKey": "csgo", "location": {} },

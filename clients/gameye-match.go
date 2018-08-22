@@ -4,7 +4,7 @@ import (
 	"github.com/Gameye/gameye-sdk-go/models"
 )
 
-type StartMatchPayload struct {
+type startMatchPayload struct {
 	MatchKey     string                 `json:"matchKey"`
 	GameKey      string                 `json:"gameKey"`
 	LocationKeys []string               `json:"locationKeys"`
@@ -12,16 +12,16 @@ type StartMatchPayload struct {
 	Config       map[string]interface{} `json:"config"`
 }
 
-/**
- * Start a match
- * @param matchKey a unique identifier for this match, you will use this
- * identifier to refer to this match in the future
- * @param gameKey identifier of the game
- * @param locationKeys list of location identifiers, if the first one is not
- * available, the second one is tried and so on.
- * @param templateKey identifier of the template for this game to use
- * @param config configuration of the template
- */
+/*
+CommandStartMatch will start a match
+@param matchKey a unique identifier for this match, you will use this
+identifier to refer to this match in the future
+@param gameKey identifier of the game
+@param locationKeys list of location identifiers, if the first one is not
+available, the second one is tried and so on.
+@param templateKey identifier of the template for this game to use
+@param config configuration of the template
+*/
 func (client GameyeClient) CommandStartMatch(
 	matchKey string,
 	gameKey string,
@@ -29,7 +29,7 @@ func (client GameyeClient) CommandStartMatch(
 	templateKey string,
 	config map[string]interface{},
 ) (err error) {
-	err = client.command("start-match", StartMatchPayload{
+	err = client.command("start-match", startMatchPayload{
 		matchKey,
 		gameKey,
 		locationKeys,
@@ -39,29 +39,29 @@ func (client GameyeClient) CommandStartMatch(
 	return
 }
 
-type StopMatchPayload struct {
+type stopMatchPayload struct {
 	MatchKey string `json:"matchKey"`
 }
 
-/**
- * Stop a match
- * @param matchKey Identifer of the match
- */
+/*
+CommandStopMatch will stop a match
+@param matchKey Identifer of the match
+*/
 func (client GameyeClient) CommandStopMatch(
 	matchKey string,
 ) (err error) {
-	err = client.command("stop-match", StopMatchPayload{
+	err = client.command("stop-match", stopMatchPayload{
 		matchKey,
 	})
 	return
 }
 
-/**
- * Fetch the match state
- */
+/*
+QueryMatch will fetch the match state
+*/
 func (client GameyeClient) QueryMatch() (
-	err error,
 	state *models.MatchQueryState,
+	err error,
 ) {
 	var anyState map[string]interface{}
 
@@ -81,14 +81,14 @@ func (client GameyeClient) QueryMatch() (
 	return
 }
 
-/**
- * Subscribe to the match state
- */
+/*
+SubscribeMatch will subscribe to the match state
+*/
 func (client GameyeClient) SubscribeMatch() (
-	err error,
 	subscription *MatchQuerySubscription,
+	err error,
 ) {
-	var qs QuerySubscription
+	var qs *querySubscription
 	qs, err = client.subscribe(
 		"match",
 		nil,
@@ -104,14 +104,23 @@ func (client GameyeClient) SubscribeMatch() (
 	return
 }
 
+/*
+MatchQuerySubscription is a subscription to the match state
+*/
 type MatchQuerySubscription struct {
-	qs QuerySubscription
+	qs *querySubscription
 }
 
+/*
+Cancel will end and cleanup the subscription
+*/
 func (s *MatchQuerySubscription) Cancel() {
 	s.qs.Cancel()
 }
 
+/*
+NextState will return the next state
+*/
 func (s *MatchQuerySubscription) NextState() (
 	state *models.MatchQueryState,
 	err error,

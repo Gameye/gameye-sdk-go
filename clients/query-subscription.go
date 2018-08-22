@@ -14,18 +14,10 @@ type queryPatch struct {
 	Value interface{} `json:"value"`
 }
 
-type QuerySubscription interface {
-	Cancel()
-	NextState() (
-		state map[string]interface{},
-		err error,
-	)
-}
-
-func NewQuerySubscription(
+func newQuerySubscription(
 	reader io.ReadCloser,
 	cancelFunc func(),
-) QuerySubscription {
+) *querySubscription {
 	return &querySubscription{
 		reader,
 		cancelFunc,
