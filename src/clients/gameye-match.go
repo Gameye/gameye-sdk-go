@@ -6,11 +6,11 @@ import (
 )
 
 type StartMatchPayload struct {
-	MatchKey     string
-	GameKey      string
-	LocationKeys []string
-	TemplateKey  string
-	Config       map[string]interface{}
+	MatchKey     string                 `json:"matchKey"`
+	GameKey      string                 `json:"gameKey"`
+	LocationKeys []string               `json:"locationKeys"`
+	TemplateKey  string                 `json:"templateKey"`
+	Config       map[string]interface{} `json:"config"`
 }
 
 /**
@@ -41,7 +41,7 @@ func (client GameyeClient) CommandStartMatch(
 }
 
 type StopMatchPayload struct {
-	MatchKey string
+	MatchKey string `json:"matchKey"`
 }
 
 /**
