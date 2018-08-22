@@ -1,47 +1,47 @@
 package models
 
 type StatisticQueryState struct {
-	Statistic AnyStatisticState
+	Statistic AnyStatisticState `mapstructure:"statistic"`
 }
 
 type AnyStatisticState = struct {
-	Start          int
-	Stop           int
-	StartedRounds  int
-	FinishedRounds int
-	Player         map[string]PlayerModel
-	Team           map[string]int
+	Start          int                    `mapstructure:"start"`
+	Stop           int                    `mapstructure:"stop"`
+	StartedRounds  int                    `mapstructure:"startedRounds"`
+	FinishedRounds int                    `mapstructure:"finishedRounds"`
+	Player         map[string]PlayerModel `mapstructure:"player"`
+	Team           map[string]TeamModel   `mapstructure:"team"`
 }
 
-type StartStopState struct {
-	Start int
-	Stop  int
-}
+// type StartStopState struct {
+// 	Start int `mapstructure:"start"`
+// 	Stop  int `mapstructure:"stop"`
+// }
 
-type RoundState struct {
-	StartedRounds  int
-	FinishedRounds int
-}
+// type RoundState struct {
+// 	StartedRounds  int `mapstructure:"startedRounds"`
+// 	FinishedRounds int `mapstructure:"finishedRounds"`
+// }
 
-type PlayerContainerState struct {
-	Player map[string]PlayerModel
-}
+// type PlayerContainerState struct {
+// 	Player map[string]PlayerModel `mapstructure:"player"`
+// }
 
 type PlayerModel struct {
-	PlayerKey string
-	Uid       string
-	Connected bool
-	Name      string
-	Statistic map[string]int
+	PlayerKey string         `mapstructure:"playerKey"`
+	UID       string         `mapstructure:"uid"`
+	Connected bool           `mapstructure:"connected"`
+	Name      string         `mapstructure:"name"`
+	Statistic map[string]int `mapstructure:"statistic"`
 }
 
-type TeamContainerState struct {
-	Team map[string]TeamModel
-}
+// type TeamContainerState struct {
+// 	Team map[string]int `mapstructure:"team"`
+// }
 
 type TeamModel struct {
-	TeamKey   string
-	Name      string
-	Statistic map[string]int
-	Player    map[string]bool
+	TeamKey   string          `mapstructure:"teamKey"`
+	Name      string          `mapstructure:"name"`
+	Statistic map[string]int  `mapstructure:"statistic"`
+	Player    map[string]bool `mapstructure:"player"`
 }

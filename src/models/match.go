@@ -1,16 +1,16 @@
 package models
 
 type MatchQueryState struct {
-	Match MatchQueryMatchIndex
+	Match MatchQueryMatchIndex `mapstructure:"match"`
 }
 
 type MatchQueryMatchIndex = map[string]MatchQueryMatchItem
 
 type MatchQueryMatchItem struct {
-	MatchKey    string
-	GameKey     string
-	LocationKey string
-	Host        string
-	Created     int
-	Port        map[string]int
+	MatchKey    string         `mapstructure:"matchKey"`
+	GameKey     string         `mapstructure:"gameKey"`
+	LocationKey string         `mapstructure:"locationKey"`
+	Host        string         `mapstructure:"host"`
+	Created     int            `mapstructure:"created"`
+	Port        map[string]int `mapstructure:"port"`
 }

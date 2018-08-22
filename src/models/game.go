@@ -1,8 +1,8 @@
 package models
 
 type GameQueryState struct {
-	Game     GameQueryGameIndex
-	Location GameQueryLocationIndex
+	Game     GameQueryGameIndex     `mapstructure:"game"`
+	Location GameQueryLocationIndex `mapstructure:"location"`
 }
 
 type GameQueryGameIndex = map[string]GameQueryGameItem
@@ -10,9 +10,9 @@ type GameQueryGameIndex = map[string]GameQueryGameItem
 type GameQueryLocationIndex = map[string]GameQueryLocationItem
 
 type GameQueryGameItem struct {
-	GameKey  string
-	Location map[string]bool
+	GameKey  string          `mapstructure:"gameKey"`
+	Location map[string]bool `mapstructure:"location"`
 }
 type GameQueryLocationItem struct {
-	LocationKey string
+	LocationKey string `mapstructure:"locationKey"`
 }
