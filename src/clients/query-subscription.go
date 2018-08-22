@@ -9,6 +9,11 @@ import (
 	"github.com/Gameye/gameye-sdk-go/src/utils"
 )
 
+type queryPatch struct {
+	Path  []string    `json:"path"`
+	Value interface{} `json:"value"`
+}
+
 type QuerySubscription interface {
 	Cancel()
 	NextState() (
@@ -60,7 +65,7 @@ func (qs querySubscription) NextState() (
 		decoder := json.NewDecoder(lineReader)
 
 		var patches []queryPatch
-		err = decoder.Decode(patches)
+		err = decoder.Decode(&patches)
 		if err != nil {
 			panic(err)
 		}
