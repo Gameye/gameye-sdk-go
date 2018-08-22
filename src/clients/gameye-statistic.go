@@ -5,9 +5,9 @@ import (
 	"github.com/mitchellh/mapstructure"
 )
 
-type StatisticQueryArg struct {
-	MatchKey string
-}
+// type StatisticQueryArg struct {
+// 	MatchKey string
+// }
 
 /**
  * Fetch statistic state
