@@ -13,10 +13,21 @@ func SelectPlayerList(
 ) (
 	playerList []*PlayerItem,
 ) {
-	// const playerIndex = statisticState.statistic.player;
-	// if (!playerIndex) return [];
+	playerList = make([]*PlayerItem, 0)
 
-	// return Object.values(playerIndex);
+	playerIndex := statisticState.Statistic.Player
+	if playerIndex == nil {
+		return
+	}
+
+	for _, playerItem := range playerIndex {
+		if playerItem == nil {
+			continue
+		}
+
+		playerList = append(playerList, playerItem)
+	}
+
 	return
 }
 
@@ -31,17 +42,36 @@ func SelectPlayerListForTeam(
 ) (
 	playerList []*PlayerItem,
 ) {
-	// const teamIndex = statisticState.statistic.team;
-	// if (!teamIndex) return [];
+	playerList = make([]*PlayerItem, 0)
 
-	// if (!teamIndex[teamKey]) return [];
+	teamIndex := statisticState.Statistic.Team
+	if teamIndex == nil {
+		return
+	}
 
-	// const playerIndex = statisticState.statistic.player;
-	// if (!playerIndex) return [];
+	teamItem := teamIndex[teamKey]
+	if teamItem == nil {
+		return
+	}
 
-	// return Object.entries(teamIndex[teamKey].player).
-	//     filter(([, playerEnabled]) => playerEnabled).
-	//     map(([playerKey]) => playerIndex[playerKey]);
+	playerIndex := statisticState.Statistic.Player
+	if playerIndex == nil {
+		return
+	}
+
+	for playerKey, playerEnabled := range teamItem.Player {
+		if !playerEnabled {
+			continue
+		}
+
+		playerItem := playerIndex[playerKey]
+		if playerItem == nil {
+			continue
+		}
+
+		playerList = append(playerList, playerItem)
+	}
+
 	return
 }
 
@@ -56,12 +86,11 @@ func SelectPlayerItem(
 ) (
 	playerItem *PlayerItem,
 ) {
-	// const playerIndex = statisticState.statistic.player;
-	// if (!playerIndex) return null;
+	playerIndex := statisticState.Statistic.Player
+	if playerIndex == nil {
+		return
+	}
 
-	// const playerItem = playerIndex[playerKey];
-	// if (!playerItem) return null;
-
-	// return playerItem;
+	playerItem = playerIndex[playerKey]
 	return
 }

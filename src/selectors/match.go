@@ -13,9 +13,16 @@ func SelectMatchList(
 ) (
 	matchList []*MatchItem,
 ) {
-	// return Object.values(matchState.match).
-	//     filter(Boolean).
-	//     map(i => i as MatchItem);
+	matchList = make([]*MatchItem, 0)
+
+	for _, matchItem := range matchState.Match {
+		if matchItem == nil {
+			continue
+		}
+
+		matchList = append(matchList, matchItem)
+	}
+
 	return
 }
 
@@ -30,10 +37,19 @@ func SelectMatchListForGame(
 ) (
 	matchList []*MatchItem,
 ) {
-	// return Object.values(matchState.match).
-	//     filter(Boolean).
-	//     map(i => i as MatchItem).
-	//     filter(i => i.gameKey === gameKey);
+	matchList = make([]*MatchItem, 0)
+
+	for _, matchItem := range matchState.Match {
+		if matchItem == nil {
+			continue
+		}
+		if matchItem.GameKey != gameKey {
+			continue
+		}
+
+		matchList = append(matchList, matchItem)
+	}
+
 	return
 }
 
@@ -49,8 +65,6 @@ func SelectMatchItem(
 ) (
 	matchItem *MatchItem,
 ) {
-	// const matchItem = matchState.match[matchKey];
-	// if (!matchItem) return null;
-	// return matchItem;
+	matchItem = matchState.Match[matchKey]
 	return
 }

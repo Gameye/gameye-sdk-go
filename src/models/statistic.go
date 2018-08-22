@@ -5,12 +5,12 @@ type StatisticQueryState struct {
 }
 
 type AnyStatisticState = struct {
-	Start          int                    `mapstructure:"start"`
-	Stop           int                    `mapstructure:"stop"`
-	StartedRounds  int                    `mapstructure:"startedRounds"`
-	FinishedRounds int                    `mapstructure:"finishedRounds"`
-	Player         map[string]PlayerModel `mapstructure:"player"`
-	Team           map[string]TeamModel   `mapstructure:"team"`
+	Start          int                     `mapstructure:"start"`
+	Stop           int                     `mapstructure:"stop"`
+	StartedRounds  int                     `mapstructure:"startedRounds"`
+	FinishedRounds int                     `mapstructure:"finishedRounds"`
+	Player         map[string]*PlayerModel `mapstructure:"player"`
+	Team           map[string]*TeamModel   `mapstructure:"team"`
 }
 
 // type StartStopState struct {
@@ -50,8 +50,8 @@ var StatisticStateMock = StatisticQueryState{
 	Statistic: AnyStatisticState{
 		Start: 1519833365000,
 		Stop:  1519834524000,
-		Player: map[string]PlayerModel{
-			"3": PlayerModel{
+		Player: map[string]*PlayerModel{
+			"3": &PlayerModel{
 				PlayerKey: "3",
 				Connected: false,
 				UID:       "STEAM_1:1:218909830",
@@ -62,7 +62,7 @@ var StatisticStateMock = StatisticQueryState{
 					"kill":   17,
 				},
 			},
-			"4": PlayerModel{
+			"4": &PlayerModel{
 				PlayerKey: "4",
 				Connected: false,
 				UID:       "STEAM_1:1:24748064",
@@ -76,8 +76,8 @@ var StatisticStateMock = StatisticQueryState{
 		},
 		StartedRounds:  36,
 		FinishedRounds: 36,
-		Team: map[string]TeamModel{
-			"1": TeamModel{
+		Team: map[string]*TeamModel{
+			"1": &TeamModel{
 				TeamKey: "1",
 				Name:    "TeamA",
 				Statistic: map[string]int{
@@ -87,7 +87,7 @@ var StatisticStateMock = StatisticQueryState{
 					"3": true,
 				},
 			},
-			"2": TeamModel{
+			"2": &TeamModel{
 				TeamKey: "2",
 				Name:    "TeamB",
 				Statistic: map[string]int{

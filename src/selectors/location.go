@@ -15,14 +15,20 @@ func SelectLocationListForGame(
 ) (
 	locationList []*LocationItem,
 ) {
-	// const gameItem = gameState.game[gameKey];
-	// if (!gameItem) return [];
+	locationList = make([]*LocationItem, 0)
 
-	// return Object.entries(gameItem.location).
-	//     filter(([, hasLocation]) => hasLocation).
-	//     map(([locationKey]) => ({
-	//         locationKey,
-	//     } as LocationItem));
+	gameItem := gameState.Game[gameKey]
+	if gameItem == nil {
+		return
+	}
+
+	for locationKey, hasLocation := range gameItem.Location {
+		if !hasLocation {
+			continue
+		}
+		locationItem := gameState.Location[locationKey]
+		locationList = append(locationList, locationItem)
+	}
 
 	return
 }

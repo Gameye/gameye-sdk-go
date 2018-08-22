@@ -4,7 +4,7 @@ type MatchQueryState struct {
 	Match MatchQueryMatchIndex `mapstructure:"match"`
 }
 
-type MatchQueryMatchIndex = map[string]MatchQueryMatchItem
+type MatchQueryMatchIndex = map[string]*MatchQueryMatchItem
 
 type MatchQueryMatchItem struct {
 	MatchKey    string         `mapstructure:"matchKey"`
@@ -17,7 +17,7 @@ type MatchQueryMatchItem struct {
 
 var MatchStateMock = MatchQueryState{
 	Match: MatchQueryMatchIndex{
-		"test-match-123": MatchQueryMatchItem{
+		"test-match-123": &MatchQueryMatchItem{
 			Created:     1518191338368,
 			GameKey:     "test",
 			Host:        "127.0.0.1",
@@ -28,7 +28,7 @@ var MatchStateMock = MatchQueryState{
 				"tv":   57025,
 			},
 		},
-		"test-match-456": MatchQueryMatchItem{
+		"test-match-456": &MatchQueryMatchItem{
 			Created:     1518191339368,
 			GameKey:     "testing",
 			Host:        "127.0.0.1",

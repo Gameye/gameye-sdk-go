@@ -13,9 +13,16 @@ func SelectTemplateList(
 ) (
 	templateList []*TemplateItem,
 ) {
-	// return Object.values(templateState.template).
-	//     filter(Boolean).
-	//     map(i => i as TemplateItem);
+	templateList = make([]*TemplateItem, 0)
+
+	for _, templateItem := range templateState.Template {
+		if templateItem == nil {
+			continue
+		}
+
+		templateList = append(templateList, templateItem)
+	}
+
 	return
 }
 
@@ -31,8 +38,6 @@ func SelectTemplateItem(
 ) (
 	templateItem *TemplateItem,
 ) {
-	// const templateItem = templateState.template[templateKey];
-	// if (!templateItem) return null;
-	// return templateItem;
+	templateItem = templateState.Template[templateKey]
 	return
 }

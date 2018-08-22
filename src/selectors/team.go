@@ -13,10 +13,21 @@ func SelectTeamList(
 ) (
 	teamList []*TeamItem,
 ) {
-	// const teamIndex = statisticState.statistic.team;
-	// if (!teamIndex) return [];
+	teamList = make([]*TeamItem, 0)
 
-	// return Object.values(teamIndex);
+	teamIndex := statisticState.Statistic.Team
+	if teamIndex == nil {
+		return
+	}
+
+	for _, teamItem := range teamIndex {
+		if teamItem == nil {
+			continue
+		}
+
+		teamList = append(teamList, teamItem)
+	}
+
 	return
 }
 
@@ -31,12 +42,11 @@ func SelectTeamItem(
 ) (
 	teamItem *TeamItem,
 ) {
-	// const teamIndex = statisticState.statistic.team;
-	// if (!teamIndex) return null;
+	teamIndex := statisticState.Statistic.Team
+	if teamIndex == nil {
+		return
+	}
 
-	// const teamItem = teamIndex[teamKey];
-	// if (!teamItem) return null;
-
-	// return teamItem;
+	teamItem = teamIndex[teamKey]
 	return
 }

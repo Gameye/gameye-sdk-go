@@ -4,7 +4,7 @@ type TemplateQueryState struct {
 	Template TemplateQueryArgIndex
 }
 
-type TemplateQueryArgIndex = map[string]TemplateQueryArgItem
+type TemplateQueryArgIndex = map[string]*TemplateQueryArgItem
 
 type TemplateQueryArgItem struct {
 	TemplateKey string    `mapstructure:"templateKey"`
@@ -36,7 +36,7 @@ type StringArgConfigItem struct {
 
 var TemplateStateMock = TemplateQueryState{
 	Template: TemplateQueryArgIndex{
-		"t1": TemplateQueryArgItem{
+		"t1": &TemplateQueryArgItem{
 			TemplateKey: "t1",
 			Arg: ArgConfig{
 				NumberArgConfigItem{
@@ -46,7 +46,7 @@ var TemplateStateMock = TemplateQueryState{
 				},
 			},
 		},
-		"t2": TemplateQueryArgItem{
+		"t2": &TemplateQueryArgItem{
 			TemplateKey: "t2",
 			Arg: ArgConfig{
 				StringArgConfigItem{
