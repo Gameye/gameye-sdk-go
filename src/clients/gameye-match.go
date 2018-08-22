@@ -2,6 +2,7 @@ package clients
 
 import (
 	"github.com/Gameye/gameye-sdk-go/src/models"
+	"github.com/mitchellh/mapstructure"
 )
 
 type StartMatchPayload struct {
@@ -63,38 +64,68 @@ func (client GameyeClient) QueryMatch() (
 	err error,
 	state *models.MatchQueryState,
 ) {
-	err = client.query(
+	var anyState map[string]interface{}
+
+	anyState, err = client.query(
 		"match",
 		nil,
-		state,
 	)
+	if err != nil {
+		return
+	}
+
+	err = mapstructure.Decode(anyState, state)
+	if err != nil {
+		return
+	}
+
 	return
 }
 
 /**
  * Subscribe to the match state
  */
-func (client GameyeClient) SubscribeMatch(
-	cancelChannel <-chan struct{},
-) (
+func (client GameyeClient) SubscribeMatch() (
 	err error,
-	stateChannel chan<- models.MatchQueryState,
+	subscription *MatchQuerySubscription,
 ) {
-	var state *models.MatchQueryState
-	var anyStateChannel <-chan interface{}
-
-	anyStateChannel, err = client.subscribe(
+	var qs QuerySubscription
+	qs, err = client.subscribe(
 		"match",
 		nil,
-		state,
-		cancelChannel,
 	)
+	if err != nil {
+		return
+	}
 
-	go func() {
-		for anyState := range anyStateChannel {
-			stateChannel <- anyState.(models.MatchQueryState)
-		}
-	}()
+	subscription = &MatchQuerySubscription{
+		qs,
+	}
+
+	return
+}
+
+type MatchQuerySubscription struct {
+	qs QuerySubscription
+}
+
+func (s *MatchQuerySubscription) Cancel() {
+	s.qs.Cancel()
+}
+
+func (s *MatchQuerySubscription) NextState() (
+	state *models.MatchQueryState,
+	err error,
+) {
+	var anyState map[string]interface{}
+	anyState, err = s.qs.NextState()
+	if err != nil {
+		return
+	}
+	err = mapstructure.Decode(anyState, state)
+	if err != nil {
+		return
+	}
 
 	return
 }

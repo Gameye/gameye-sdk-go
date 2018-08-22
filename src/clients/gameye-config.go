@@ -6,5 +6,5 @@ type GameyeClientConfig struct {
 }
 
 func (config GameyeClientConfig) validate() {
-
+	// TODO
 }

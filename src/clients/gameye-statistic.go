@@ -2,6 +2,7 @@ package clients
 
 import (
 	"github.com/Gameye/gameye-sdk-go/src/models"
+	"github.com/mitchellh/mapstructure"
 )
 
 type StatisticQueryArg struct {
@@ -18,13 +19,23 @@ func (client GameyeClient) QueryStatistic(
 	err error,
 	state *models.StatisticQueryState,
 ) {
-	err = client.query(
+	var anyState map[string]interface{}
+
+	anyState, err = client.query(
 		"statistic",
 		map[string]string{
 			"matchKey": matchKey,
 		},
-		state,
 	)
+	if err != nil {
+		return
+	}
+
+	err = mapstructure.Decode(anyState, state)
+	if err != nil {
+		return
+	}
+
 	return
 }
 
@@ -33,29 +44,51 @@ func (client GameyeClient) QueryStatistic(
  * @param matchKey identifier of the match
  */
 func (client GameyeClient) SubscribeStatistic(
-	cancelChannel <-chan struct{},
 	matchKey string,
 ) (
 	err error,
-	stateChannel chan<- models.StatisticQueryState,
+	subscription *StatisticQuerySubscription,
 ) {
-	var state *models.StatisticQueryState
-	var anyStateChannel <-chan interface{}
-
-	anyStateChannel, err = client.subscribe(
+	var qs QuerySubscription
+	qs, err = client.subscribe(
 		"statistic",
 		map[string]string{
 			"matchKey": matchKey,
 		},
-		state,
-		cancelChannel,
 	)
 
-	go func() {
-		for anyState := range anyStateChannel {
-			stateChannel <- anyState.(models.StatisticQueryState)
-		}
-	}()
+	if err != nil {
+		return
+	}
+
+	subscription = &StatisticQuerySubscription{
+		qs,
+	}
+
+	return
+}
+
+type StatisticQuerySubscription struct {
+	qs QuerySubscription
+}
+
+func (s *StatisticQuerySubscription) Cancel() {
+	s.qs.Cancel()
+}
+
+func (s *StatisticQuerySubscription) NextState() (
+	state *models.StatisticQueryState,
+	err error,
+) {
+	var anyState map[string]interface{}
+	anyState, err = s.qs.NextState()
+	if err != nil {
+		return
+	}
+	err = mapstructure.Decode(anyState, state)
+	if err != nil {
+		return
+	}
 
 	return
 }

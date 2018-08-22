@@ -2,6 +2,7 @@ package clients
 
 import (
 	"github.com/Gameye/gameye-sdk-go/src/models"
+	"github.com/mitchellh/mapstructure"
 )
 
 // type TemplateQueryArg struct {
@@ -18,13 +19,23 @@ func (client GameyeClient) QueryTemplate(
 	err error,
 	state *models.TemplateQueryState,
 ) {
-	err = client.query(
+	var anyState map[string]interface{}
+
+	anyState, err = client.query(
 		"template",
 		map[string]string{
 			"gameKey": gameKey,
 		},
-		state,
 	)
+	if err != nil {
+		return
+	}
+
+	err = mapstructure.Decode(anyState, state)
+	if err != nil {
+		return
+	}
+
 	return
 }
 
@@ -33,29 +44,50 @@ func (client GameyeClient) QueryTemplate(
  * @param gameKey identifier of the game
  */
 func (client GameyeClient) SubscribeTemplate(
-	cancelChannel <-chan struct{},
 	gameKey string,
 ) (
 	err error,
-	stateChannel chan<- models.TemplateQueryState,
+	subscription *TemplateQuerySubscription,
 ) {
-	var state *models.TemplateQueryState
-	var anyStateChannel <-chan interface{}
-
-	anyStateChannel, err = client.subscribe(
+	var qs QuerySubscription
+	qs, err = client.subscribe(
 		"template",
 		map[string]string{
 			"gameKey": gameKey,
 		},
-		state,
-		cancelChannel,
 	)
+	if err != nil {
+		return
+	}
 
-	go func() {
-		for anyState := range anyStateChannel {
-			stateChannel <- anyState.(models.TemplateQueryState)
-		}
-	}()
+	subscription = &TemplateQuerySubscription{
+		qs,
+	}
+
+	return
+}
+
+type TemplateQuerySubscription struct {
+	qs QuerySubscription
+}
+
+func (s *TemplateQuerySubscription) Cancel() {
+	s.qs.Cancel()
+}
+
+func (s *TemplateQuerySubscription) NextState() (
+	state *models.TemplateQueryState,
+	err error,
+) {
+	var anyState map[string]interface{}
+	anyState, err = s.qs.NextState()
+	if err != nil {
+		return
+	}
+	err = mapstructure.Decode(anyState, state)
+	if err != nil {
+		return
+	}
 
 	return
 }
