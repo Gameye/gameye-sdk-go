@@ -2,19 +2,28 @@ package selectors
 
 import (
 	"testing"
+
+	"github.com/Gameye/gameye-sdk-go/src/models"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestSelectTemplateList(t *testing.T) {
-	// const templateList = selectTemplateList(mocks.templateStateMock);
-	// t.equal(templateList.length, 2);
-	// t.equal(templateList.filter(i => i.templateKey === "t1").length, 1);
-	// t.equal(templateList.filter(i => i.templateKey === "t2").length, 1);
+	templateList := SelectTemplateList(&models.TemplateStateMock)
+	assert.Equal(t, 2, len(templateList))
+	for _, templateItem := range templateList {
+		switch templateItem.TemplateKey {
+		case "t1":
+		case "t2":
+		default:
+			assert.Fail(t, templateItem.TemplateKey)
+		}
+	}
 }
 
 func TestSelectTemplateItem(t *testing.T) {
-	// const templateItem = selectTemplateItem(mocks.templateStateMock, "t2");
-	// t.ok(templateItem);
-	// if (templateItem) {
-	//     t.equal(templateItem.templateKey, "t2");
-	// }
+	templateItem := SelectTemplateItem(&models.TemplateStateMock, "t2")
+	assert.NotNil(t, templateItem)
+	if templateItem != nil {
+		assert.Equal(t, "t2", templateItem.TemplateKey)
+	}
 }

@@ -2,22 +2,31 @@ package selectors
 
 import (
 	"testing"
+
+	"github.com/Gameye/gameye-sdk-go/src/models"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestSelectTeamList(t *testing.T) {
-	// const teamList = selectTeamList(mocks.statisticStateMock);
-	// t.equal(teamList.length, 2);
-	// t.equal(teamList.filter(i => i.teamKey === "1").length, 1);
-	// t.equal(teamList.filter(i => i.teamKey === "1")[0].name, "TeamA");
-	// t.equal(teamList.filter(i => i.teamKey === "2").length, 1);
-	// t.equal(teamList.filter(i => i.teamKey === "2")[0].name, "TeamB");
+	teamList := SelectTeamList(&models.StatisticStateMock)
+	assert.Equal(t, 2, len(teamList))
+	for _, teamItem := range teamList {
+		switch teamItem.TeamKey {
+		case "1":
+			assert.Equal(t, "TeamA", teamItem.Name)
+		case "2":
+			assert.Equal(t, "TeamB", teamItem.Name)
+		default:
+			assert.Fail(t, teamItem.TeamKey)
+		}
+	}
 }
 
 func TestSelectTeamItem(t *testing.T) {
-	// const teamItem = selectTeamItem(mocks.statisticStateMock, "2");
-	// t.ok(teamItem);
-	// if (teamItem) {
-	//     t.equal(teamItem.teamKey, "2");
-	//     t.equal(teamItem.name, "TeamB");
-	// }
+	teamItem := SelectTeamItem(&models.StatisticStateMock, "2")
+	assert.NotNil(t, teamItem)
+	if teamItem != nil {
+		assert.Equal(t, "2", teamItem.TeamKey)
+		assert.Equal(t, "TeamB", teamItem.Name)
+	}
 }

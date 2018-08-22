@@ -2,29 +2,44 @@ package selectors
 
 import (
 	"testing"
+
+	"github.com/Gameye/gameye-sdk-go/src/models"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestSelectPlayerList(t *testing.T) {
-	// const playerList = selectPlayerList(mocks.statisticStateMock);
-	// t.equal(playerList.length, 2);
-	// t.equal(playerList.filter(i => i.playerKey === "3").length, 1);
-	// t.equal(playerList.filter(i => i.playerKey === "3")[0].name, "denise");
-	// t.equal(playerList.filter(i => i.playerKey === "4").length, 1);
-	// t.equal(playerList.filter(i => i.playerKey === "4")[0].name, "Smashmint");
+	playerList := SelectPlayerList(&models.StatisticStateMock)
+	assert.Equal(t, 2, len(playerList))
+	for _, playerItem := range playerList {
+		switch playerItem.PlayerKey {
+		case "3":
+			assert.Equal(t, "denise", playerItem.Name)
+		case "4":
+			assert.Equal(t, "Smashmint", playerItem.Name)
+		default:
+			assert.Fail(t, playerItem.PlayerKey)
+		}
+	}
 }
 
 func TestSelectPlayerListForTeam(t *testing.T) {
-	// const playerList = selectPlayerListForTeam(mocks.statisticStateMock, "1");
-	// t.equal(playerList.length, 1);
-	// t.equal(playerList.filter(i => i.playerKey === "3").length, 1);
-	// t.equal(playerList.filter(i => i.playerKey === "3")[0].name, "denise");
+	playerList := SelectPlayerListForTeam(&models.StatisticStateMock, "1")
+	assert.Equal(t, 1, len(playerList))
+	for _, playerItem := range playerList {
+		switch playerItem.PlayerKey {
+		case "3":
+			assert.Equal(t, "denise", playerItem.Name)
+		default:
+			assert.Fail(t, playerItem.PlayerKey)
+		}
+	}
 }
 
 func TestSelectPlayerItem(t *testing.T) {
-	// const playerItem = selectPlayerItem(mocks.statisticStateMock, "4");
-	// t.ok(playerItem);
-	// if (playerItem) {
-	//     t.equal(playerItem.playerKey, "4");
-	//     t.equal(playerItem.name, "Smashmint");
-	// }
+	playerItem := SelectPlayerItem(&models.StatisticStateMock, "4")
+	assert.NotNil(t, playerItem)
+	if playerItem != nil {
+		assert.Equal(t, "4", playerItem.PlayerKey)
+		assert.Equal(t, "Smashmint", playerItem.Name)
+	}
 }

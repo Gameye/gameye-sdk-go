@@ -2,25 +2,40 @@ package selectors
 
 import (
 	"testing"
+
+	"github.com/Gameye/gameye-sdk-go/src/models"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestSelectMatchList(t *testing.T) {
-	// const matchList = selectMatchList(mocks.matchStateMock);
-	// t.equal(matchList.length, 2);
-	// t.equal(matchList.filter(i => i.matchKey === "test-match-123").length, 1);
-	// t.equal(matchList.filter(i => i.matchKey === "test-match-456").length, 1);
+	matchList := SelectMatchList(&models.MatchStateMock)
+	assert.Equal(t, 2, len(matchList))
+	for _, matchItem := range matchList {
+		switch matchItem.MatchKey {
+		case "test-match-123":
+		case "test-match-456":
+		default:
+			assert.Fail(t, matchItem.MatchKey)
+		}
+	}
 }
 
 func TestSelectMatchListForGame(t *testing.T) {
-	// const matchList = selectMatchListForGame(mocks.matchStateMock, "test");
-	// t.equal(matchList.length, 1);
-	// t.equal(matchList.filter(i => i.matchKey === "test-match-123").length, 1);
+	matchList := SelectMatchListForGame(&models.MatchStateMock, "test")
+	assert.Equal(t, 1, len(matchList))
+	for _, matchItem := range matchList {
+		switch matchItem.MatchKey {
+		case "test-match-123":
+		default:
+			assert.Fail(t, matchItem.MatchKey)
+		}
+	}
 }
 
 func TestSelectMatchItem(t *testing.T) {
-	// const matchItem = selectMatchItem(mocks.matchStateMock, "test-match-123");
-	// t.ok(matchItem);
-	// if (matchItem) {
-	//     t.equal(matchItem.matchKey, "test-match-123");
-	// }
+	matchItem := SelectMatchItem(&models.MatchStateMock, "test-match-123")
+	assert.NotNil(t, matchItem)
+	if matchItem != nil {
+		assert.Equal(t, "test-match-123", matchItem.MatchKey)
+	}
 }
