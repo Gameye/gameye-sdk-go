@@ -2,7 +2,6 @@ package clients
 
 import (
 	"github.com/Gameye/gameye-sdk-go/models"
-	"github.com/mitchellh/mapstructure"
 )
 
 // type StatisticQueryArg struct {
@@ -31,7 +30,7 @@ func (client GameyeClient) QueryStatistic(
 		return
 	}
 
-	err = mapstructure.Decode(anyState, state)
+	state, err = models.CreateStatisticQueryState(&anyState)
 	if err != nil {
 		return
 	}
@@ -85,7 +84,7 @@ func (s *StatisticQuerySubscription) NextState() (
 	if err != nil {
 		return
 	}
-	err = mapstructure.Decode(anyState, state)
+	state, err = models.CreateStatisticQueryState(&anyState)
 	if err != nil {
 		return
 	}

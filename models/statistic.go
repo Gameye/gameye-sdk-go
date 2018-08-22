@@ -1,5 +1,20 @@
 package models
 
+import "github.com/mitchellh/mapstructure"
+
+/*
+CreateStatisticQueryState will create a new StatisticQueryState from
+a string / interface map
+*/
+func CreateStatisticQueryState(anyState *map[string]interface{}) (
+	state *StatisticQueryState,
+	err error,
+) {
+	state = &StatisticQueryState{}
+	mapstructure.Decode(anyState, state)
+	return
+}
+
 type StatisticQueryState struct {
 	Statistic AnyStatisticState `mapstructure:"statistic"`
 }

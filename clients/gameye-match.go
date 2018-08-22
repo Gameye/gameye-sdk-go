@@ -2,7 +2,6 @@ package clients
 
 import (
 	"github.com/Gameye/gameye-sdk-go/models"
-	"github.com/mitchellh/mapstructure"
 )
 
 type StartMatchPayload struct {
@@ -74,7 +73,7 @@ func (client GameyeClient) QueryMatch() (
 		return
 	}
 
-	err = mapstructure.Decode(anyState, state)
+	state, err = models.CreateMatchQueryState(&anyState)
 	if err != nil {
 		return
 	}
@@ -122,7 +121,7 @@ func (s *MatchQuerySubscription) NextState() (
 	if err != nil {
 		return
 	}
-	err = mapstructure.Decode(anyState, state)
+	state, err = models.CreateMatchQueryState(&anyState)
 	if err != nil {
 		return
 	}

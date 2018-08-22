@@ -5,7 +5,6 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/mitchellh/mapstructure"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -25,8 +24,8 @@ func TestMatchQueryState(t *testing.T) {
 		}
 	}
 
-	var state MatchQueryState
-	mapstructure.Decode(&anyState, &state)
+	var state *MatchQueryState
+	state, err = CreateMatchQueryState(&anyState)
 
-	assert.Equal(t, MatchStateMock, state)
+	assert.Equal(t, MatchStateMock, *state)
 }

@@ -1,5 +1,20 @@
 package models
 
+import "github.com/mitchellh/mapstructure"
+
+/*
+CreateGameQueryState will create a new GameQueryState from
+a string / interface map
+*/
+func CreateGameQueryState(anyState *map[string]interface{}) (
+	state *GameQueryState,
+	err error,
+) {
+	state = &GameQueryState{}
+	mapstructure.Decode(anyState, state)
+	return
+}
+
 type GameQueryState struct {
 	Game     GameQueryGameIndex     `mapstructure:"game"`
 	Location GameQueryLocationIndex `mapstructure:"location"`

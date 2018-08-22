@@ -1,5 +1,39 @@
 package models
 
+import "github.com/mitchellh/mapstructure"
+
+/*
+CreateTemplateQueryState will create a new TemplateQueryState from
+a string / interface map
+*/
+func CreateTemplateQueryState(anyState *map[string]interface{}) (
+	state *TemplateQueryState,
+	err error,
+) {
+	state = &TemplateQueryState{}
+
+	mapstructure.Decode(anyState, state)
+	for _, templateItem := range state.Template {
+		for argIndex, argItem := range templateItem.Arg {
+			anyArgItem := argItem.(map[string]interface{})
+			switch anyArgItem["type"] {
+			case "string":
+				typedArgItem := StringArgConfigItem{}
+				mapstructure.Decode(&anyArgItem, &typedArgItem)
+				templateItem.Arg[argIndex] = typedArgItem
+			case "number":
+				typedArgItem := NumberArgConfigItem{}
+				mapstructure.Decode(&anyArgItem, &typedArgItem)
+				templateItem.Arg[argIndex] = typedArgItem
+			default:
+				err = ErrUnknownType
+				return
+			}
+		}
+	}
+	return
+}
+
 type TemplateQueryState struct {
 	Template TemplateQueryArgIndex
 }
@@ -27,11 +61,11 @@ type NumberArgConfigItem struct {
 }
 type StringArgConfigItem struct {
 	// type "string"
-	Name               string   `mapstructure:"Name"`
-	DefaultValue       string   `mapstructure:"DefaultValue"`
-	ValidatePattern    string   `mapstructure:"ValidatePattern"`
-	ValidateIgnoreCase bool     `mapstructure:"ValidateIgnoreCase"`
-	Option             []string `mapstructure:"Option"`
+	Name               string   `mapstructure:"name"`
+	DefaultValue       string   `mapstructure:"defaultValue"`
+	ValidatePattern    string   `mapstructure:"validatePattern"`
+	ValidateIgnoreCase bool     `mapstructure:"validateIgnoreCase"`
+	Option             []string `mapstructure:"option"`
 }
 
 var TemplateStateMock = TemplateQueryState{

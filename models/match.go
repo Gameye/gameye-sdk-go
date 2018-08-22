@@ -1,5 +1,20 @@
 package models
 
+import "github.com/mitchellh/mapstructure"
+
+/*
+CreateMatchQueryState will create a new MatchQueryState from
+a string / interface map
+*/
+func CreateMatchQueryState(anyState *map[string]interface{}) (
+	state *MatchQueryState,
+	err error,
+) {
+	state = &MatchQueryState{}
+	mapstructure.Decode(anyState, state)
+	return
+}
+
 type MatchQueryState struct {
 	Match MatchQueryMatchIndex `mapstructure:"match"`
 }

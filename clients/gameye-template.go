@@ -2,7 +2,6 @@ package clients
 
 import (
 	"github.com/Gameye/gameye-sdk-go/models"
-	"github.com/mitchellh/mapstructure"
 )
 
 // type TemplateQueryArg struct {
@@ -31,7 +30,7 @@ func (client GameyeClient) QueryTemplate(
 		return
 	}
 
-	err = mapstructure.Decode(anyState, state)
+	state, err = models.CreateTemplateQueryState(&anyState)
 	if err != nil {
 		return
 	}
@@ -84,7 +83,7 @@ func (s *TemplateQuerySubscription) NextState() (
 	if err != nil {
 		return
 	}
-	err = mapstructure.Decode(anyState, state)
+	state, err = models.CreateTemplateQueryState(&anyState)
 	if err != nil {
 		return
 	}

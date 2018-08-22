@@ -2,7 +2,6 @@ package clients
 
 import (
 	"github.com/Gameye/gameye-sdk-go/models"
-	"github.com/mitchellh/mapstructure"
 )
 
 /**
@@ -21,7 +20,7 @@ func (client GameyeClient) QueryGame() (
 		return
 	}
 
-	err = mapstructure.Decode(anyState, state)
+	state, err = models.CreateGameQueryState(&anyState)
 	if err != nil {
 		return
 	}
@@ -69,7 +68,7 @@ func (s *GameQuerySubscription) NextState() (
 	if err != nil {
 		return
 	}
-	err = mapstructure.Decode(anyState, state)
+	state, err = models.CreateGameQueryState(&anyState)
 	if err != nil {
 		return
 	}
