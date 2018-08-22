@@ -47,7 +47,7 @@ func (client GameyeClient) query(
 	}
 
 	decoder := json.NewDecoder(res.Body)
-	err = decoder.Decode(state)
+	err = decoder.Decode(&state)
 	if err != nil {
 		return
 	}

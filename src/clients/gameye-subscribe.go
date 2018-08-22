@@ -8,11 +8,6 @@ import (
 	"net/url"
 )
 
-type queryPatch struct {
-	Path  []string    `json:path`
-	Value interface{} `json:value`
-}
-
 func (client GameyeClient) subscribe(
 	name string,
 	arg map[string]string,
@@ -45,6 +40,11 @@ func (client GameyeClient) subscribe(
 	var ctx context.Context
 	var cancelRequest context.CancelFunc
 	ctx, cancelRequest = context.WithCancel(context.Background())
+	defer func() {
+		if err != nil {
+			cancelRequest()
+		}
+	}()
 	req = req.WithContext(ctx)
 
 	var res *http.Response
