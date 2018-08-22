@@ -23,7 +23,7 @@ jobs:
     steps:
       - checkout
       - run: go get golang.org/x/lint/golint
-      - run: ~/go/bin/golint ./...
+      - run: ~/go/bin/golint ./clients ./models ./selectors ./test ./utils
 
   spec:
     docker: *docker_golang
@@ -35,7 +35,7 @@ jobs:
       - attach_workspace: *attach_workspace
       - run: go get github.com/jstemmer/go-junit-report
       - run: mkdir -p /tmp/test-results
-      - run: go test ./... -v | ~/go/bin/go-junit-report > /tmp/test-results/spec.xml
+      - run: go test ./clients ./models ./selectors ./test ./utils -v | ~/go/bin/go-junit-report > /tmp/test-results/spec.xml
       - store_test_results: &store_test_results
           path: /tmp/test-results
 
