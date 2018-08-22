@@ -4,6 +4,9 @@ jobs:
   prepare:
     docker: &docker_golang
       - image: circleci/golang:1.10
+    environment:
+      GOPATH: /home/circleci/go
+    working_directory: /home/circleci/go/src/github.com/Gameye/gameye-sdk-node
     steps:
       - checkout
       - run: dep ensure
@@ -16,24 +19,24 @@ jobs:
     docker: *docker_golang
     environment:
       GOPATH: /home/circleci/go
-    working_directory: /home/circleci/go/src/github.com/Gameye/loader-agent
+    working_directory: /home/circleci/go/src/github.com/Gameye/gameye-sdk-node
     steps:
       - checkout
       - attach_workspace: &attach_workspace
           at: .
       - run: go get golang.org/x/lint/golint
-      - run: golint
+      - run: ~/go/bin/golint
 
   spec:
     docker: *docker_golang
     environment:
       GOPATH: /home/circleci/go
-    working_directory: /home/circleci/go/src/github.com/Gameye/loader-agent
+    working_directory: /home/circleci/go/src/github.com/Gameye/gameye-sdk-node
     steps:
       - attach_workspace: *attach_workspace
       - run: go get github.com/jstemmer/go-junit-report
       - run: mkdir -p /tmp/test-results
-      - run: go test -v 2>&1 | go-junit-report > /tmp/test-results/spec.xml
+      - run: go test -v 2>&1 | ~/go/bin/golint/go-junit-report > /tmp/test-results/spec.xml
       - store_test_results: &store_test_results
           path: /tmp/test-results
 
