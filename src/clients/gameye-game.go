@@ -26,7 +26,7 @@ func (client GameyeClient) SubscribeGame(
 	cancelChannel <-chan struct{},
 ) (
 	err error,
-	stateChannel chan<- *models.GameQueryState,
+	stateChannel chan<- models.GameQueryState,
 ) {
 	var state *models.GameQueryState
 	var anyStateChannel <-chan interface{}
@@ -40,7 +40,7 @@ func (client GameyeClient) SubscribeGame(
 
 	go func() {
 		for anyState := range anyStateChannel {
-			stateChannel <- anyState.(*models.GameQueryState)
+			stateChannel <- anyState.(models.GameQueryState)
 		}
 	}()
 

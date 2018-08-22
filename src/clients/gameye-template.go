@@ -37,7 +37,7 @@ func (client GameyeClient) SubscribeTemplate(
 	gameKey string,
 ) (
 	err error,
-	stateChannel chan<- *models.TemplateQueryState,
+	stateChannel chan<- models.TemplateQueryState,
 ) {
 	var state *models.TemplateQueryState
 	var anyStateChannel <-chan interface{}
@@ -53,7 +53,7 @@ func (client GameyeClient) SubscribeTemplate(
 
 	go func() {
 		for anyState := range anyStateChannel {
-			stateChannel <- anyState.(*models.TemplateQueryState)
+			stateChannel <- anyState.(models.TemplateQueryState)
 		}
 	}()
 

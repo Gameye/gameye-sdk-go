@@ -37,7 +37,7 @@ func (client GameyeClient) SubscribeStatistic(
 	matchKey string,
 ) (
 	err error,
-	stateChannel chan<- *models.StatisticQueryState,
+	stateChannel chan<- models.StatisticQueryState,
 ) {
 	var state *models.StatisticQueryState
 	var anyStateChannel <-chan interface{}
@@ -53,7 +53,7 @@ func (client GameyeClient) SubscribeStatistic(
 
 	go func() {
 		for anyState := range anyStateChannel {
-			stateChannel <- anyState.(*models.StatisticQueryState)
+			stateChannel <- anyState.(models.StatisticQueryState)
 		}
 	}()
 
