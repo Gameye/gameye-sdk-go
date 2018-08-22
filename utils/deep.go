@@ -1,5 +1,8 @@
 package utils
 
+/*
+SetIn deeply sets a value in source via path
+*/
 func SetIn(
 	source map[string]interface{},
 	path []string,

@@ -11,7 +11,7 @@ func (client GameyeClient) subscribe(
 	name string,
 	arg map[string]string,
 ) (
-	qs QuerySubscription,
+	qs *querySubscription,
 	err error,
 ) {
 	var query url.Values
@@ -56,7 +56,7 @@ func (client GameyeClient) subscribe(
 		return
 	}
 
-	qs = NewQuerySubscription(
+	qs = newQuerySubscription(
 		res.Body,
 		cancelRequest,
 	)

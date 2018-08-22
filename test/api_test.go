@@ -14,7 +14,7 @@ func TestListenAndServeApiTestServer(t *testing.T) {
 		assert.NoError(t, err)
 	}()
 
-	mux := CreateApiTestServerMux(
+	mux := CreateAPITestServerMux(
 		nil, nil,
 	)
 

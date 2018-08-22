@@ -2,12 +2,15 @@ package selectors
 
 import "github.com/Gameye/gameye-sdk-go/models"
 
+/*
+TemplateItem holds information about a template
+*/
 type TemplateItem = models.TemplateQueryArgItem
 
-/**
- * Select a list of templates.
- * @param templateState template state
- */
+/*
+SelectTemplateList selects a list of templates.
+@param templateState template state
+*/
 func SelectTemplateList(
 	templateState *models.TemplateQueryState,
 ) (
@@ -26,12 +29,12 @@ func SelectTemplateList(
 	return
 }
 
-/**
- * Get details about a single template from a template-state as returned by
- * the gameye api.
- * @param templateState template state
- * @param templateKey identifier of the template
- */
+/*
+SelectTemplateItem gets details about a single template from a
+template-state as returned by the gameye api.
+@param templateState template state
+@param templateKey identifier of the template
+*/
 func SelectTemplateItem(
 	templateState *models.TemplateQueryState,
 	templateKey string,

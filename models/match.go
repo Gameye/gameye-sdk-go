@@ -15,12 +15,21 @@ func CreateMatchQueryState(anyState *map[string]interface{}) (
 	return
 }
 
+/*
+MatchQueryState is data coming from the api
+*/
 type MatchQueryState struct {
 	Match MatchQueryMatchIndex `mapstructure:"match"`
 }
 
+/*
+MatchQueryMatchIndex is data coming from the api
+*/
 type MatchQueryMatchIndex = map[string]*MatchQueryMatchItem
 
+/*
+MatchQueryMatchItem is data coming from the api
+*/
 type MatchQueryMatchItem struct {
 	MatchKey    string         `mapstructure:"matchKey"`
 	GameKey     string         `mapstructure:"gameKey"`
@@ -30,6 +39,9 @@ type MatchQueryMatchItem struct {
 	Port        map[string]int `mapstructure:"port"`
 }
 
+/*
+MatchStateMock is mock data, useful for testing
+*/
 var MatchStateMock = MatchQueryState{
 	Match: MatchQueryMatchIndex{
 		"test-match-123": &MatchQueryMatchItem{
@@ -57,6 +69,9 @@ var MatchStateMock = MatchQueryState{
 	},
 }
 
+/*
+MatchStateJSONMock is json mock data, useful for testing
+*/
 var MatchStateJSONMock = `{
     "match": {
         "test-match-123": {

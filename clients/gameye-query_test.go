@@ -20,7 +20,7 @@ func TestGameyeClient_query(t *testing.T) {
 			"b": "c",
 		},
 	}
-	mux := test.CreateApiTestServerMux(
+	mux := test.CreateAPITestServerMux(
 		expected, nil,
 	)
 

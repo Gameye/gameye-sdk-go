@@ -16,7 +16,7 @@ func TestGameyeClient_subscribe(t *testing.T) {
 	}()
 
 	patchChannel := make(chan test.QueryPatch, 1)
-	mux := test.CreateApiTestServerMux(
+	mux := test.CreateAPITestServerMux(
 		nil, patchChannel,
 	)
 
@@ -33,7 +33,7 @@ func TestGameyeClient_subscribe(t *testing.T) {
 		Token:    "",
 	})
 
-	var qs QuerySubscription
+	var qs *querySubscription
 	qs, err = client.subscribe("noop", nil)
 	if err != nil {
 		return

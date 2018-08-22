@@ -15,7 +15,7 @@ func TestGameyeClient_command(t *testing.T) {
 		assert.NoError(t, err)
 	}()
 
-	mux := test.CreateApiTestServerMux(
+	mux := test.CreateAPITestServerMux(
 		nil, nil,
 	)
 

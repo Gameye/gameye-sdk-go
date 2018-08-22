@@ -2,12 +2,15 @@ package selectors
 
 import "github.com/Gameye/gameye-sdk-go/models"
 
+/*
+PlayerItem holds information about a player
+*/
 type PlayerItem = models.PlayerModel
 
-/**
- * List all players in the match.
- * @param statisticState statistic state
- */
+/*
+SelectPlayerList lists all players in the match.
+@param statisticState statistic state
+*/
 func SelectPlayerList(
 	statisticState *models.StatisticQueryState,
 ) (
@@ -31,11 +34,11 @@ func SelectPlayerList(
 	return
 }
 
-/**
- * Get a list if all players in a team.
- * @param statisticState statistic state
- * @param teamKey identifier of the team
- */
+/*
+SelectPlayerListForTeam gets a list if all players in a team.
+@param statisticState statistic state
+@param teamKey identifier of the team
+*/
 func SelectPlayerListForTeam(
 	statisticState *models.StatisticQueryState,
 	teamKey string,
@@ -75,11 +78,11 @@ func SelectPlayerListForTeam(
 	return
 }
 
-/**
- * Get a single player in the match.
- * @param statisticState statistic state
- * @param playerKey identifier of the player to get the details for
- */
+/*
+SelectPlayerItem gets a single player in the match.
+@param statisticState statistic state
+@param playerKey identifier of the player to get the details for
+*/
 func SelectPlayerItem(
 	statisticState *models.StatisticQueryState,
 	playerKey string,

@@ -15,10 +15,16 @@ func CreateStatisticQueryState(anyState *map[string]interface{}) (
 	return
 }
 
+/*
+StatisticQueryState is data coming from the api
+*/
 type StatisticQueryState struct {
 	Statistic AnyStatisticState `mapstructure:"statistic"`
 }
 
+/*
+AnyStatisticState is data coming from the api
+*/
 type AnyStatisticState = struct {
 	Start          int                     `mapstructure:"start"`
 	Stop           int                     `mapstructure:"stop"`
@@ -42,6 +48,9 @@ type AnyStatisticState = struct {
 // 	Player map[string]PlayerModel `mapstructure:"player"`
 // }
 
+/*
+PlayerModel is data coming from the api
+*/
 type PlayerModel struct {
 	PlayerKey string         `mapstructure:"playerKey"`
 	UID       string         `mapstructure:"uid"`
@@ -54,6 +63,9 @@ type PlayerModel struct {
 // 	Team map[string]int `mapstructure:"team"`
 // }
 
+/*
+TeamModel is data coming from the api
+*/
 type TeamModel struct {
 	TeamKey   string          `mapstructure:"teamKey"`
 	Name      string          `mapstructure:"name"`
@@ -61,6 +73,9 @@ type TeamModel struct {
 	Player    map[string]bool `mapstructure:"player"`
 }
 
+/*
+StatisticStateMock is mock data, for testing purpose
+*/
 var StatisticStateMock = StatisticQueryState{
 	Statistic: AnyStatisticState{
 		Start: 1519833365000,
@@ -116,6 +131,9 @@ var StatisticStateMock = StatisticQueryState{
 	},
 }
 
+/*
+StatisticStateJSONMock is json mock data, for testing purpose
+*/
 var StatisticStateJSONMock = `{
     "statistic": {
         "start": 1519833365000,

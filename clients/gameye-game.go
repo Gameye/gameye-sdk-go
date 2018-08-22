@@ -4,12 +4,12 @@ import (
 	"github.com/Gameye/gameye-sdk-go/models"
 )
 
-/**
- * Fetch the game state
- */
+/*
+QueryGame will Fetch the game state
+*/
 func (client GameyeClient) QueryGame() (
-	err error,
 	state *models.GameQueryState,
+	err error,
 ) {
 	var anyState map[string]interface{}
 	anyState, err = client.query(
@@ -28,14 +28,14 @@ func (client GameyeClient) QueryGame() (
 	return
 }
 
-/**
- * Subscribe to the game state
- */
+/*
+SubscribeGame subscribes to the game state
+*/
 func (client GameyeClient) SubscribeGame() (
-	err error,
 	subscription *GameQuerySubscription,
+	err error,
 ) {
-	var qs QuerySubscription
+	var qs *querySubscription
 	qs, err = client.subscribe(
 		"game",
 		nil,
@@ -51,14 +51,23 @@ func (client GameyeClient) SubscribeGame() (
 	return
 }
 
+/*
+GameQuerySubscription is a subscription to the game state
+*/
 type GameQuerySubscription struct {
-	qs QuerySubscription
+	qs *querySubscription
 }
 
+/*
+Cancel will end and cleanup the subscription
+*/
 func (s *GameQuerySubscription) Cancel() {
 	s.qs.Cancel()
 }
 
+/*
+NextState will return the next state
+*/
 func (s *GameQuerySubscription) NextState() (
 	state *models.GameQueryState,
 	err error,
