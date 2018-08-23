@@ -5,6 +5,8 @@ import (
 	"net/http"
 )
 
+var port = 10000
+
 /*
 CreateAPITestServer creates a test server
 */
@@ -13,10 +15,12 @@ func CreateAPITestServer(
 ) (
 	server *http.Server,
 ) {
+	port++
+
 	mux := CreateAPITestServerMux(responseChannel)
 	server = &http.Server{
 		Handler: mux,
-		Addr:    ":8080",
+		Addr:    ":" + fmt.Sprint(port),
 	}
 
 	return
