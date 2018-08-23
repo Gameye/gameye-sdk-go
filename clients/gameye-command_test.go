@@ -16,7 +16,7 @@ func TestGameyeClient_command(t *testing.T) {
 	}()
 
 	mux := test.CreateAPITestServerMux(
-		nil, nil,
+		`{}`, nil,
 	)
 
 	var listener net.Listener

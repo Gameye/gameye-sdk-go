@@ -15,9 +15,9 @@ func TestGameyeClient_subscribe(t *testing.T) {
 		assert.NoError(t, err)
 	}()
 
-	patchChannel := make(chan test.QueryPatch, 1)
+	patchChannel := make(chan string, 1)
 	mux := test.CreateAPITestServerMux(
-		nil, patchChannel,
+		`{}`, patchChannel,
 	)
 
 	var listener net.Listener
@@ -46,10 +46,7 @@ func TestGameyeClient_subscribe(t *testing.T) {
 				"b": "c",
 			},
 		}
-		patchChannel <- test.QueryPatch{
-			Path:  []string{},
-			Value: expected,
-		}
+		patchChannel <- `[{"path":[],"value":{"a":{"b":"c"}}}]`
 		var actual map[string]interface{}
 		actual, err = qs.NextState()
 		if err != nil {
@@ -65,10 +62,7 @@ func TestGameyeClient_subscribe(t *testing.T) {
 				"b": "d",
 			},
 		}
-		patchChannel <- test.QueryPatch{
-			Path:  []string{"a", "b"},
-			Value: "d",
-		}
+		patchChannel <- `[{"path":["a","b"],"value":"d"}]`
 		var actual map[string]interface{}
 		actual, err = qs.NextState()
 		if err != nil {

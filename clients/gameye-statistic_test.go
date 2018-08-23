@@ -1,8 +1,10 @@
 package clients
 
 import (
+	"fmt"
 	"net"
 	"net/http"
+	"strings"
 	"testing"
 
 	"github.com/Gameye/gameye-sdk-go/models"
@@ -17,8 +19,9 @@ func TestGameyeClient_SubscribeStatistic(t *testing.T) {
 		assert.NoError(t, err)
 	}()
 
+	patchChannel := make(chan string, 1)
 	mux := test.CreateAPITestServerMux(
-		nil, nil,
+		`{}`, patchChannel,
 	)
 
 	var listener net.Listener
@@ -40,6 +43,17 @@ func TestGameyeClient_SubscribeStatistic(t *testing.T) {
 		return
 	}
 	defer sub.Cancel()
+
+	{
+		patchChannel <- fmt.Sprintf(`[{"path":[],"value":%s}]`, strings.Replace(models.StatisticStateJSONMock, "\n", "", -1))
+		var state *models.StatisticQueryState
+		state, err = sub.NextState()
+		if err != nil {
+			return
+		}
+
+		assert.Equal(t, &models.StatisticStateMock, state)
+	}
 }
 
 func TestGameyeClient_QueryStatistic(t *testing.T) {
@@ -49,7 +63,7 @@ func TestGameyeClient_QueryStatistic(t *testing.T) {
 	}()
 
 	mux := test.CreateAPITestServerMux(
-		nil, nil,
+		models.StatisticStateJSONMock, nil,
 	)
 
 	var listener net.Listener
@@ -70,5 +84,5 @@ func TestGameyeClient_QueryStatistic(t *testing.T) {
 	if err != nil {
 		return
 	}
-	assert.NotNil(t, state)
+	assert.Equal(t, &models.StatisticStateMock, state)
 }

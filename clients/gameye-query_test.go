@@ -15,13 +15,8 @@ func TestGameyeClient_query(t *testing.T) {
 		assert.NoError(t, err)
 	}()
 
-	expected := map[string]interface{}{
-		"a": map[string]interface{}{
-			"b": "c",
-		},
-	}
 	mux := test.CreateAPITestServerMux(
-		expected, nil,
+		`{"a":{"b":"c"}}`, nil,
 	)
 
 	var listener net.Listener
@@ -41,6 +36,12 @@ func TestGameyeClient_query(t *testing.T) {
 	actual, err = client.query("noop", nil)
 	if err != nil {
 		return
+	}
+
+	expected := map[string]interface{}{
+		"a": map[string]interface{}{
+			"b": "c",
+		},
 	}
 
 	assert.Equal(t, expected, actual)

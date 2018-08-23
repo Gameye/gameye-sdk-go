@@ -1,24 +1,16 @@
 package test
 
 import (
-	"encoding/json"
+	"fmt"
 	"net/http"
 )
-
-/*
-QueryPatch is used to update a state
-*/
-type QueryPatch struct {
-	Path  []string    `json:"path"`
-	Value interface{} `json:"value"`
-}
 
 /*
 CreateAPITestServerMux creates the ServeMux for a api test server
 */
 func CreateAPITestServerMux(
-	state map[string]interface{},
-	patchChannel chan QueryPatch,
+	state string,
+	patchChannel chan string,
 ) (
 	mux *http.ServeMux,
 ) {
@@ -35,8 +27,7 @@ func CreateAPITestServerMux(
 		accept := r.Header.Get("Accept")
 		switch accept {
 		case "application/json":
-			encoder := json.NewEncoder(w)
-			err = encoder.Encode(state)
+			_, err = fmt.Fprintln(w, state)
 			if err != nil {
 				panic(err)
 			}
@@ -49,14 +40,13 @@ func CreateAPITestServerMux(
 			w.WriteHeader(http.StatusOK)
 			flusher.Flush()
 
-			encoder := json.NewEncoder(w)
 			for {
 				select {
 				case <-closeChannel:
-					break
+					return
 
 				case patch := <-patchChannel:
-					err = encoder.Encode([]QueryPatch{patch})
+					_, err = fmt.Fprintln(w, patch)
 					if err != nil {
 						panic(err)
 					}

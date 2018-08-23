@@ -8,14 +8,14 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestListenAndServeApiTestServer(t *testing.T) {
+func TestApiTestServer(t *testing.T) {
 	var err error
 	defer func() {
 		assert.NoError(t, err)
 	}()
 
 	mux := CreateAPITestServerMux(
-		nil, nil,
+		`{}`, nil,
 	)
 
 	var listener net.Listener

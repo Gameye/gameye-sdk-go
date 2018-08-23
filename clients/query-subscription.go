@@ -43,6 +43,7 @@ func (qs querySubscription) NextState() (
 	err error,
 ) {
 	state = qs.lastState
+loop:
 	for {
 		var line string
 		line, err = qs.lineReader.ReadString('\n')
@@ -53,7 +54,7 @@ func (qs querySubscription) NextState() (
 			return
 		}
 		if len(line) == 0 {
-			continue
+			continue loop
 		}
 
 		lineReader := strings.NewReader(line)
@@ -62,13 +63,13 @@ func (qs querySubscription) NextState() (
 		var patches []queryPatch
 		err = decoder.Decode(&patches)
 		if err != nil {
-			panic(err)
+			return
 		}
 
 		for _, patch := range patches {
 			state = utils.SetIn(state, patch.Path, patch.Value)
 		}
-		break
+		break loop
 	}
 	qs.lastState = state
 	return
