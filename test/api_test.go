@@ -14,11 +14,7 @@ func TestApiTestServer(t *testing.T) {
 		assert.NoError(t, err)
 	}()
 
-	mux := CreateAPITestServerMux(nil)
-	server := &http.Server{
-		Handler: mux,
-		Addr:    ":8080",
-	}
+	server := CreateAPITestServer(nil)
 	defer server.Shutdown(context.Background())
 	go server.ListenAndServe()
 

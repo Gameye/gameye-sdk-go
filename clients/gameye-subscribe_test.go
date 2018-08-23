@@ -2,7 +2,6 @@ package clients
 
 import (
 	"context"
-	"net/http"
 	"testing"
 
 	"github.com/Gameye/gameye-sdk-go/test"
@@ -16,11 +15,7 @@ func TestGameyeClient_subscribe(t *testing.T) {
 	}()
 
 	responseChannel := make(chan string, 1)
-	mux := test.CreateAPITestServerMux(responseChannel)
-	server := &http.Server{
-		Handler: mux,
-		Addr:    ":8080",
-	}
+	server := test.CreateAPITestServer(responseChannel)
 	defer server.Shutdown(context.Background())
 	go server.ListenAndServe()
 

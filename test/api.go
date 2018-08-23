@@ -6,6 +6,23 @@ import (
 )
 
 /*
+CreateAPITestServer creates a test server
+*/
+func CreateAPITestServer(
+	responseChannel chan string,
+) (
+	server *http.Server,
+) {
+	mux := CreateAPITestServerMux(responseChannel)
+	server = &http.Server{
+		Handler: mux,
+		Addr:    ":8080",
+	}
+
+	return
+}
+
+/*
 CreateAPITestServerMux creates the ServeMux for a api test server
 */
 func CreateAPITestServerMux(

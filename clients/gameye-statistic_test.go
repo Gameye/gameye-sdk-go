@@ -3,7 +3,6 @@ package clients
 import (
 	"context"
 	"fmt"
-	"net/http"
 	"strings"
 	"testing"
 
@@ -21,11 +20,7 @@ func TestGameyeClient_SubscribeStatistic(t *testing.T) {
 	}()
 
 	responseChannel := make(chan string, 1)
-	mux := test.CreateAPITestServerMux(responseChannel)
-	server := &http.Server{
-		Handler: mux,
-		Addr:    ":8080",
-	}
+	server := test.CreateAPITestServer(responseChannel)
 	defer server.Shutdown(context.Background())
 	go server.ListenAndServe()
 
@@ -60,11 +55,7 @@ func TestGameyeClient_QueryStatistic(t *testing.T) {
 	}()
 
 	responseChannel := make(chan string, 1)
-	mux := test.CreateAPITestServerMux(responseChannel)
-	server := &http.Server{
-		Handler: mux,
-		Addr:    ":8080",
-	}
+	server := test.CreateAPITestServer(responseChannel)
 	defer server.Shutdown(context.Background())
 	go server.ListenAndServe()
 
@@ -89,11 +80,7 @@ func TestGameyeClient_killTotal(t *testing.T) {
 	}()
 
 	responseChannel := make(chan string, 1)
-	mux := test.CreateAPITestServerMux(responseChannel)
-	server := &http.Server{
-		Handler: mux,
-		Addr:    ":8080",
-	}
+	server := test.CreateAPITestServer(responseChannel)
 	defer server.Shutdown(context.Background())
 	go server.ListenAndServe()
 
