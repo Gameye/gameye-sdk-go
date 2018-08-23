@@ -15,9 +15,7 @@ func TestGameyeClient_command(t *testing.T) {
 		assert.NoError(t, err)
 	}()
 
-	mux := test.CreateAPITestServerMux(
-		`{}`, nil,
-	)
+	mux := test.CreateAPITestServerMux(nil)
 	server := &http.Server{
 		Handler: mux,
 		Addr:    ":8080",

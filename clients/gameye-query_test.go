@@ -15,9 +15,8 @@ func TestGameyeClient_query(t *testing.T) {
 		assert.NoError(t, err)
 	}()
 
-	mux := test.CreateAPITestServerMux(
-		`{"a":{"b":"c"}}`, nil,
-	)
+	responseChannel := make(chan string, 1)
+	mux := test.CreateAPITestServerMux(responseChannel)
 	server := &http.Server{
 		Handler: mux,
 		Addr:    ":8080",
@@ -30,6 +29,7 @@ func TestGameyeClient_query(t *testing.T) {
 		Token:    "",
 	})
 
+	responseChannel <- `{"a":{"b":"c"}}`
 	var actual map[string]interface{}
 	actual, err = client.query("noop", nil)
 	if err != nil {

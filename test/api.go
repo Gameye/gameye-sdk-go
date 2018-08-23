@@ -9,8 +9,7 @@ import (
 CreateAPITestServerMux creates the ServeMux for a api test server
 */
 func CreateAPITestServerMux(
-	state string,
-	patchChannel chan string,
+	responseChannel chan string,
 ) (
 	mux *http.ServeMux,
 ) {
@@ -27,7 +26,8 @@ func CreateAPITestServerMux(
 		accept := r.Header.Get("Accept")
 		switch accept {
 		case "application/json":
-			_, err = fmt.Fprintln(w, state)
+			response := responseChannel
+			_, err = fmt.Fprintln(w, <-response)
 			if err != nil {
 				panic(err)
 			}
@@ -45,8 +45,8 @@ func CreateAPITestServerMux(
 				case <-closeChannel:
 					return
 
-				case patch := <-patchChannel:
-					_, err = fmt.Fprintln(w, patch)
+				case response := <-responseChannel:
+					_, err = fmt.Fprintln(w, response)
 					if err != nil {
 						panic(err)
 					}

@@ -15,10 +15,8 @@ func TestGameyeClient_subscribe(t *testing.T) {
 		assert.NoError(t, err)
 	}()
 
-	patchChannel := make(chan string, 1)
-	mux := test.CreateAPITestServerMux(
-		`{}`, patchChannel,
-	)
+	responseChannel := make(chan string, 1)
+	mux := test.CreateAPITestServerMux(responseChannel)
 	server := &http.Server{
 		Handler: mux,
 		Addr:    ":8080",
@@ -44,7 +42,7 @@ func TestGameyeClient_subscribe(t *testing.T) {
 				"b": "c",
 			},
 		}
-		patchChannel <- `[{"path":[],"value":{"a":{"b":"c"}}}]`
+		responseChannel <- `[{"path":[],"value":{"a":{"b":"c"}}}]`
 		var actual map[string]interface{}
 		actual, err = qs.NextState()
 		if err != nil {
@@ -60,7 +58,7 @@ func TestGameyeClient_subscribe(t *testing.T) {
 				"b": "d",
 			},
 		}
-		patchChannel <- `[{"path":["a","b"],"value":"d"}]`
+		responseChannel <- `[{"path":["a","b"],"value":"d"}]`
 		var actual map[string]interface{}
 		actual, err = qs.NextState()
 		if err != nil {
@@ -74,7 +72,7 @@ func TestGameyeClient_subscribe(t *testing.T) {
 		expected := map[string]interface{}{
 			"a": float64(1),
 		}
-		patchChannel <- `[{"path":["a"],"value":1}]`
+		responseChannel <- `[{"path":["a"],"value":1}]`
 		var actual map[string]interface{}
 		actual, err = qs.NextState()
 		if err != nil {

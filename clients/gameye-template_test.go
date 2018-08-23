@@ -19,10 +19,8 @@ func TestGameyeClient_SubscribeTemplate(t *testing.T) {
 		assert.NoError(t, err)
 	}()
 
-	patchChannel := make(chan string, 1)
-	mux := test.CreateAPITestServerMux(
-		`{}`, patchChannel,
-	)
+	responseChannel := make(chan string, 1)
+	mux := test.CreateAPITestServerMux(responseChannel)
 	server := &http.Server{
 		Handler: mux,
 		Addr:    ":8080",
@@ -43,7 +41,7 @@ func TestGameyeClient_SubscribeTemplate(t *testing.T) {
 	defer sub.Cancel()
 
 	{
-		patchChannel <- fmt.Sprintf(`[{"path":[],"value":%s}]`, strings.Replace(models.TemplateStateJSONMock, "\n", "", -1))
+		responseChannel <- fmt.Sprintf(`[{"path":[],"value":%s}]`, strings.Replace(models.TemplateStateJSONMock, "\n", "", -1))
 		var state *models.TemplateQueryState
 		state, err = sub.NextState()
 		if err != nil {
@@ -60,9 +58,8 @@ func TestGameyeClient_QueryTemplate(t *testing.T) {
 		assert.NoError(t, err)
 	}()
 
-	mux := test.CreateAPITestServerMux(
-		models.TemplateStateJSONMock, nil,
-	)
+	responseChannel := make(chan string, 1)
+	mux := test.CreateAPITestServerMux(responseChannel)
 	server := &http.Server{
 		Handler: mux,
 		Addr:    ":8080",
@@ -75,6 +72,7 @@ func TestGameyeClient_QueryTemplate(t *testing.T) {
 		Token:    "",
 	})
 
+	responseChannel <- models.TemplateStateJSONMock
 	var state *models.TemplateQueryState
 	state, err = client.QueryTemplate("game-x")
 	if err != nil {

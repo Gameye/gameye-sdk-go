@@ -14,9 +14,7 @@ func TestApiTestServer(t *testing.T) {
 		assert.NoError(t, err)
 	}()
 
-	mux := CreateAPITestServerMux(
-		`{}`, nil,
-	)
+	mux := CreateAPITestServerMux(nil)
 	server := &http.Server{
 		Handler: mux,
 		Addr:    ":8080",

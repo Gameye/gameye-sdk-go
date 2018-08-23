@@ -19,10 +19,8 @@ func TestGameyeClient_SubscribeGame(t *testing.T) {
 		assert.NoError(t, err)
 	}()
 
-	patchChannel := make(chan string, 1)
-	mux := test.CreateAPITestServerMux(
-		`{}`, patchChannel,
-	)
+	responseChannel := make(chan string, 1)
+	mux := test.CreateAPITestServerMux(responseChannel)
 	server := &http.Server{
 		Handler: mux,
 		Addr:    ":8080",
@@ -43,7 +41,7 @@ func TestGameyeClient_SubscribeGame(t *testing.T) {
 	defer sub.Cancel()
 
 	{
-		patchChannel <- fmt.Sprintf(`[{"path":[],"value":%s}]`, strings.Replace(models.GameStateJSONMock, "\n", "", -1))
+		responseChannel <- fmt.Sprintf(`[{"path":[],"value":%s}]`, strings.Replace(models.GameStateJSONMock, "\n", "", -1))
 		var state *models.GameQueryState
 		state, err = sub.NextState()
 		if err != nil {
@@ -60,9 +58,8 @@ func TestGameyeClient_QueryGame(t *testing.T) {
 		assert.NoError(t, err)
 	}()
 
-	mux := test.CreateAPITestServerMux(
-		models.GameStateJSONMock, nil,
-	)
+	responseChannel := make(chan string, 1)
+	mux := test.CreateAPITestServerMux(responseChannel)
 	server := &http.Server{
 		Handler: mux,
 		Addr:    ":8080",
@@ -75,6 +72,7 @@ func TestGameyeClient_QueryGame(t *testing.T) {
 		Token:    "",
 	})
 
+	responseChannel <- models.GameStateJSONMock
 	var state *models.GameQueryState
 	state, err = client.QueryGame()
 	if err != nil {
