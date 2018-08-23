@@ -33,12 +33,12 @@ type querySubscription struct {
 	lineReader *bufio.Reader
 }
 
-func (qs querySubscription) Cancel() {
+func (qs *querySubscription) Cancel() {
 	qs.cancelFunc()
 	qs.reader.Close()
 }
 
-func (qs querySubscription) NextState() (
+func (qs *querySubscription) NextState() (
 	state map[string]interface{},
 	err error,
 ) {
