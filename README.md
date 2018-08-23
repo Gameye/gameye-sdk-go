@@ -70,6 +70,7 @@ func main() {
 			killTotal := selectKillTotal(state)
 			if killTotal != lastKillTotal {
 				fmt.Printf("Kill total %d\n", killTotal)
+				lastKillTotal = killTotal
 			}
 		}
 	}()
