@@ -14,7 +14,7 @@ func (client GameyeClient) query(
 	state map[string]interface{},
 	err error,
 ) {
-	var query url.Values
+	query := url.Values{}
 	if arg != nil {
 		for key, value := range arg {
 			query.Add(key, value)
