@@ -30,8 +30,7 @@ func SetIn(
 
 		targetChild := make(map[string]interface{})
 		if targetParent[key] != nil &&
-			sourceParent != nil &&
-			sourceParent[key] == targetParent[key] {
+			sourceParent != nil {
 
 			for key, value := range targetParent[key].(map[string]interface{}) {
 				targetChild[key] = value
