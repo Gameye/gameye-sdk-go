@@ -1,7 +1,7 @@
 package clients
 
 import (
-	"net"
+	"context"
 	"net/http"
 	"testing"
 
@@ -19,17 +19,15 @@ func TestGameyeClient_subscribe(t *testing.T) {
 	mux := test.CreateAPITestServerMux(
 		`{}`, patchChannel,
 	)
-
-	var listener net.Listener
-	listener, err = net.Listen("tcp", ":8083")
-	if err != nil {
-		return
+	server := &http.Server{
+		Handler: mux,
+		Addr:    ":8080",
 	}
-	defer listener.Close()
-	go http.Serve(listener, mux)
+	defer server.Shutdown(context.Background())
+	go server.ListenAndServe()
 
 	client := NewGameyeClient(GameyeClientConfig{
-		Endpoint: "http://localhost:8083",
+		Endpoint: "http://localhost:8080",
 		Token:    "",
 	})
 

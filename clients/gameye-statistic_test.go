@@ -1,8 +1,8 @@
 package clients
 
 import (
+	"context"
 	"fmt"
-	"net"
 	"net/http"
 	"strings"
 	"testing"
@@ -24,17 +24,15 @@ func TestGameyeClient_SubscribeStatistic(t *testing.T) {
 	mux := test.CreateAPITestServerMux(
 		`{}`, patchChannel,
 	)
-
-	var listener net.Listener
-	listener, err = net.Listen("tcp", ":8088")
-	if err != nil {
-		return
+	server := &http.Server{
+		Handler: mux,
+		Addr:    ":8080",
 	}
-	defer listener.Close()
-	go http.Serve(listener, mux)
+	defer server.Shutdown(context.Background())
+	go server.ListenAndServe()
 
 	client := NewGameyeClient(GameyeClientConfig{
-		Endpoint: "http://localhost:8088",
+		Endpoint: "http://localhost:8080",
 		Token:    "",
 	})
 
@@ -66,17 +64,15 @@ func TestGameyeClient_QueryStatistic(t *testing.T) {
 	mux := test.CreateAPITestServerMux(
 		models.StatisticStateJSONMock, nil,
 	)
-
-	var listener net.Listener
-	listener, err = net.Listen("tcp", ":8089")
-	if err != nil {
-		return
+	server := &http.Server{
+		Handler: mux,
+		Addr:    ":8080",
 	}
-	defer listener.Close()
-	go http.Serve(listener, mux)
+	defer server.Shutdown(context.Background())
+	go server.ListenAndServe()
 
 	client := NewGameyeClient(GameyeClientConfig{
-		Endpoint: "http://localhost:8089",
+		Endpoint: "http://localhost:8080",
 		Token:    "",
 	})
 
@@ -98,17 +94,15 @@ func TestGameyeClient_killTotal(t *testing.T) {
 	mux := test.CreateAPITestServerMux(
 		`{}`, patchChannel,
 	)
-
-	var listener net.Listener
-	listener, err = net.Listen("tcp", ":8100")
-	if err != nil {
-		return
+	server := &http.Server{
+		Handler: mux,
+		Addr:    ":8080",
 	}
-	defer listener.Close()
-	go http.Serve(listener, mux)
+	defer server.Shutdown(context.Background())
+	go server.ListenAndServe()
 
 	client := NewGameyeClient(GameyeClientConfig{
-		Endpoint: "http://localhost:8100",
+		Endpoint: "http://localhost:8080",
 		Token:    "",
 	})
 

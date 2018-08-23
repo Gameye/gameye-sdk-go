@@ -1,8 +1,8 @@
 package clients
 
 import (
+	"context"
 	"fmt"
-	"net"
 	"net/http"
 	"strings"
 	"testing"
@@ -23,17 +23,15 @@ func TestGameyeClient_SubscribeMatch(t *testing.T) {
 	mux := test.CreateAPITestServerMux(
 		`{}`, patchChannel,
 	)
-
-	var listener net.Listener
-	listener, err = net.Listen("tcp", ":8086")
-	if err != nil {
-		return
+	server := &http.Server{
+		Handler: mux,
+		Addr:    ":8080",
 	}
-	defer listener.Close()
-	go http.Serve(listener, mux)
+	defer server.Shutdown(context.Background())
+	go server.ListenAndServe()
 
 	client := NewGameyeClient(GameyeClientConfig{
-		Endpoint: "http://localhost:8086",
+		Endpoint: "http://localhost:8080",
 		Token:    "",
 	})
 
@@ -65,17 +63,15 @@ func TestGameyeClient_QueryMatch(t *testing.T) {
 	mux := test.CreateAPITestServerMux(
 		models.MatchStateJSONMock, nil,
 	)
-
-	var listener net.Listener
-	listener, err = net.Listen("tcp", ":8087")
-	if err != nil {
-		return
+	server := &http.Server{
+		Handler: mux,
+		Addr:    ":8080",
 	}
-	defer listener.Close()
-	go http.Serve(listener, mux)
+	defer server.Shutdown(context.Background())
+	go server.ListenAndServe()
 
 	client := NewGameyeClient(GameyeClientConfig{
-		Endpoint: "http://localhost:8087",
+		Endpoint: "http://localhost:8080",
 		Token:    "",
 	})
 
