@@ -43,9 +43,9 @@ func (qs querySubscription) NextState() (
 	err error,
 ) {
 	state = qs.lastState
-loop:
-	for {
-		var line string
+
+	line := ""
+	for line == "" {
 		line, err = qs.lineReader.ReadString('\n')
 		if err == io.EOF {
 			return
@@ -53,24 +53,22 @@ loop:
 		if err != nil {
 			return
 		}
-		if len(line) == 0 {
-			continue loop
-		}
-
-		lineReader := strings.NewReader(line)
-		decoder := json.NewDecoder(lineReader)
-
-		var patches []queryPatch
-		err = decoder.Decode(&patches)
-		if err != nil {
-			return
-		}
-
-		for _, patch := range patches {
-			state = utils.SetIn(state, patch.Path, patch.Value)
-		}
-		break loop
+		line = strings.TrimSpace(line)
 	}
+
+	lineReader := strings.NewReader(line)
+	decoder := json.NewDecoder(lineReader)
+
+	var patches []queryPatch
+	err = decoder.Decode(&patches)
+	if err != nil {
+		return
+	}
+
+	for _, patch := range patches {
+		state = utils.SetIn(state, patch.Path, patch.Value)
+	}
+
 	qs.lastState = state
 	return
 }

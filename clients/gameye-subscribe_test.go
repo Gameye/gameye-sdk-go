@@ -72,4 +72,18 @@ func TestGameyeClient_subscribe(t *testing.T) {
 		assert.Equal(t, expected, actual)
 	}
 
+	{
+		expected := map[string]interface{}{
+			"a": float64(1),
+		}
+		patchChannel <- `[{"path":["a"],"value":1}]`
+		var actual map[string]interface{}
+		actual, err = qs.NextState()
+		if err != nil {
+			return
+		}
+
+		assert.Equal(t, expected, actual)
+	}
+
 }
