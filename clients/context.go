@@ -1,27 +1,26 @@
-package test
+package clients
 
 import (
 	"context"
 	"net/http"
 	"testing"
 
-	"github.com/Gameye/gameye-sdk-go/clients"
 	"github.com/stretchr/testify/assert"
 )
 
 /*
-Context provides a handy context for testing
+testContext provides a handy context for testing
 */
-type Context struct {
+type testContext struct {
 	Server   *http.Server
-	Client   clients.GameyeClient
+	Client   GameyeClient
 	Response chan string
 }
 
 /*
-RunInContext runs a test in a context
+runInTestContext runs a test in a context
 */
-func RunInContext(t *testing.T, job func(*Context) error) {
+func runInTestContext(t *testing.T, job func(*testContext) error) {
 	var err error
 	defer func() {
 		assert.NoError(t, err)
@@ -30,16 +29,16 @@ func RunInContext(t *testing.T, job func(*Context) error) {
 	responseChannel := make(chan string, 1)
 	defer close(responseChannel)
 
-	server := CreateAPITestServer(responseChannel)
+	server := createAPITestServer(responseChannel)
 	go server.ListenAndServe()
 	defer server.Shutdown(context.Background())
 
-	client := clients.NewGameyeClient(clients.GameyeClientConfig{
+	client := NewGameyeClient(GameyeClientConfig{
 		Token:    "",
 		Endpoint: "http://localhost" + server.Addr + "",
 	})
 
-	testContext := &Context{
+	testContext := &testContext{
 		Client:   client,
 		Server:   server,
 		Response: responseChannel,

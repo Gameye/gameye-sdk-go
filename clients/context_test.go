@@ -1,4 +1,4 @@
-package test
+package clients
 
 import (
 	"net/http"
@@ -8,7 +8,7 @@ import (
 )
 
 func TestRunInContext(t *testing.T) {
-	RunInContext(t, func(ctx *Context) (err error) {
+	runInTestContext(t, func(ctx *testContext) (err error) {
 		var res *http.Response
 		res, err = http.Get("http://localhost" + ctx.Server.Addr + "/noop")
 		if err != nil {

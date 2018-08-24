@@ -1,11 +1,10 @@
-package test
+package clients
 
 import (
 	"fmt"
 	"strings"
 	"testing"
 
-	"github.com/Gameye/gameye-sdk-go/clients"
 	"github.com/Gameye/gameye-sdk-go/models"
 	"github.com/Gameye/gameye-sdk-go/selectors"
 
@@ -13,8 +12,8 @@ import (
 )
 
 func TestGameyeClient_SubscribeStatistic(t *testing.T) {
-	RunInContext(t, func(ctx *Context) (err error) {
-		var sub *clients.StatisticQuerySubscription
+	runInTestContext(t, func(ctx *testContext) (err error) {
+		var sub *StatisticQuerySubscription
 		sub, err = ctx.Client.SubscribeStatistic("match-y")
 		if err != nil {
 			return
@@ -36,7 +35,7 @@ func TestGameyeClient_SubscribeStatistic(t *testing.T) {
 }
 
 func TestGameyeClient_QueryStatistic(t *testing.T) {
-	RunInContext(t, func(ctx *Context) (err error) {
+	runInTestContext(t, func(ctx *testContext) (err error) {
 		ctx.Response <- models.StatisticStateJSONMock
 
 		var state *models.StatisticQueryState
@@ -51,8 +50,8 @@ func TestGameyeClient_QueryStatistic(t *testing.T) {
 }
 
 func TestGameyeClient_killTotal(t *testing.T) {
-	RunInContext(t, func(ctx *Context) (err error) {
-		var sub *clients.StatisticQuerySubscription
+	runInTestContext(t, func(ctx *testContext) (err error) {
+		var sub *StatisticQuerySubscription
 		sub, err = ctx.Client.SubscribeStatistic("match-x")
 		if err != nil {
 			return

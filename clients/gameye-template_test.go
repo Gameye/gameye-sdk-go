@@ -1,20 +1,19 @@
-package test
+package clients
 
 import (
 	"fmt"
 	"strings"
 	"testing"
 
-	"github.com/Gameye/gameye-sdk-go/clients"
 	"github.com/Gameye/gameye-sdk-go/models"
 
 	"github.com/stretchr/testify/assert"
 )
 
 func TestGameyeClient_SubscribeTemplate(t *testing.T) {
-	RunInContext(t, func(ctx *Context) (err error) {
+	runInTestContext(t, func(ctx *testContext) (err error) {
 
-		var sub *clients.TemplateQuerySubscription
+		var sub *TemplateQuerySubscription
 		sub, err = ctx.Client.SubscribeTemplate("game-x")
 		if err != nil {
 			return
@@ -37,7 +36,7 @@ func TestGameyeClient_SubscribeTemplate(t *testing.T) {
 }
 
 func TestGameyeClient_QueryTemplate(t *testing.T) {
-	RunInContext(t, func(ctx *Context) (err error) {
+	runInTestContext(t, func(ctx *testContext) (err error) {
 		ctx.Response <- models.TemplateStateJSONMock
 
 		var state *models.TemplateQueryState

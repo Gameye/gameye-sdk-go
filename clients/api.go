@@ -1,4 +1,4 @@
-package test
+package clients
 
 import (
 	"fmt"
@@ -8,16 +8,16 @@ import (
 var port = 10000
 
 /*
-CreateAPITestServer creates a test server
+createAPITestServer creates a test server
 */
-func CreateAPITestServer(
+func createAPITestServer(
 	responseChannel chan string,
 ) (
 	server *http.Server,
 ) {
 	port++
 
-	mux := CreateAPITestServerMux(responseChannel)
+	mux := createAPITestServerMux(responseChannel)
 	server = &http.Server{
 		Handler: mux,
 		Addr:    ":" + fmt.Sprint(port),
@@ -27,9 +27,9 @@ func CreateAPITestServer(
 }
 
 /*
-CreateAPITestServerMux creates the ServeMux for a api test server
+createAPITestServerMux creates the ServeMux for a api test server
 */
-func CreateAPITestServerMux(
+func createAPITestServerMux(
 	responseChannel chan string,
 ) (
 	mux *http.ServeMux,
