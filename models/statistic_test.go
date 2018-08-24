@@ -16,7 +16,7 @@ func TestStatisticQueryState(t *testing.T) {
 
 	anyState := make(map[string]interface{})
 	{
-		reader := strings.NewReader(StatisticStateJSONMock)
+		reader := strings.NewReader(statisticStateJSONMock)
 		decoder := json.NewDecoder(reader)
 		err = decoder.Decode(&anyState)
 		if err != nil {
@@ -27,5 +27,5 @@ func TestStatisticQueryState(t *testing.T) {
 	var state *StatisticQueryState
 	state, err = CreateStatisticQueryState(&anyState)
 
-	assert.Equal(t, StatisticStateMock, *state)
+	assert.Equal(t, statisticStateMock, state)
 }

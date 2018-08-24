@@ -16,7 +16,7 @@ func TestTemplateQueryState(t *testing.T) {
 
 	anyState := make(map[string]interface{})
 	{
-		reader := strings.NewReader(TemplateStateJSONMock)
+		reader := strings.NewReader(templateStateJSONMock)
 		decoder := json.NewDecoder(reader)
 		err = decoder.Decode(&anyState)
 		if err != nil {
@@ -26,5 +26,5 @@ func TestTemplateQueryState(t *testing.T) {
 
 	var state *TemplateQueryState
 	state, err = CreateTemplateQueryState(&anyState)
-	assert.Equal(t, TemplateStateMock, *state)
+	assert.Equal(t, templateStateMock, state)
 }

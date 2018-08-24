@@ -3,12 +3,11 @@ package selectors
 import (
 	"testing"
 
-	"github.com/Gameye/gameye-sdk-go/models"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestSelectTemplateList(t *testing.T) {
-	templateList := SelectTemplateList(&models.TemplateStateMock)
+	templateList := SelectTemplateList(templateStateMock)
 	assert.Equal(t, 2, len(templateList))
 	for _, templateItem := range templateList {
 		switch templateItem.TemplateKey {
@@ -21,7 +20,7 @@ func TestSelectTemplateList(t *testing.T) {
 }
 
 func TestSelectTemplateItem(t *testing.T) {
-	templateItem := SelectTemplateItem(&models.TemplateStateMock, "t2")
+	templateItem := SelectTemplateItem(templateStateMock, "t2")
 	assert.NotNil(t, templateItem)
 	if templateItem != nil {
 		assert.Equal(t, "t2", templateItem.TemplateKey)

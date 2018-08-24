@@ -16,7 +16,7 @@ func TestMatchQueryState(t *testing.T) {
 
 	anyState := make(map[string]interface{})
 	{
-		reader := strings.NewReader(MatchStateJSONMock)
+		reader := strings.NewReader(matchStateJSONMock)
 		decoder := json.NewDecoder(reader)
 		err = decoder.Decode(&anyState)
 		if err != nil {
@@ -27,5 +27,5 @@ func TestMatchQueryState(t *testing.T) {
 	var state *MatchQueryState
 	state, err = CreateMatchQueryState(&anyState)
 
-	assert.Equal(t, MatchStateMock, *state)
+	assert.Equal(t, matchStateMock, state)
 }

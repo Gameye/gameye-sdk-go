@@ -3,12 +3,11 @@ package selectors
 import (
 	"testing"
 
-	"github.com/Gameye/gameye-sdk-go/models"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestSelectMatchList(t *testing.T) {
-	matchList := SelectMatchList(&models.MatchStateMock)
+	matchList := SelectMatchList(matchStateMock)
 	assert.Equal(t, 2, len(matchList))
 	for _, matchItem := range matchList {
 		switch matchItem.MatchKey {
@@ -21,7 +20,7 @@ func TestSelectMatchList(t *testing.T) {
 }
 
 func TestSelectMatchListForGame(t *testing.T) {
-	matchList := SelectMatchListForGame(&models.MatchStateMock, "test")
+	matchList := SelectMatchListForGame(matchStateMock, "test")
 	assert.Equal(t, 1, len(matchList))
 	for _, matchItem := range matchList {
 		switch matchItem.MatchKey {
@@ -33,7 +32,7 @@ func TestSelectMatchListForGame(t *testing.T) {
 }
 
 func TestSelectMatchItem(t *testing.T) {
-	matchItem := SelectMatchItem(&models.MatchStateMock, "test-match-123")
+	matchItem := SelectMatchItem(matchStateMock, "test-match-123")
 	assert.NotNil(t, matchItem)
 	if matchItem != nil {
 		assert.Equal(t, "test-match-123", matchItem.MatchKey)
