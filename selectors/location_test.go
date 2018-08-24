@@ -4,12 +4,10 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-
-	"github.com/Gameye/gameye-sdk-go/models"
 )
 
 func TestSelectLocationListForGame(t *testing.T) {
-	locationList := SelectLocationListForGame(&models.GameStateMock, "test")
+	locationList := SelectLocationListForGame(gameStateMock, "test")
 	assert.Equal(t, 1, len(locationList))
 	for _, locationItem := range locationList {
 		switch locationItem.LocationKey {

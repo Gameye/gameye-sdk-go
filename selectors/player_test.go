@@ -3,12 +3,11 @@ package selectors
 import (
 	"testing"
 
-	"github.com/Gameye/gameye-sdk-go/models"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestSelectPlayerList(t *testing.T) {
-	playerList := SelectPlayerList(&models.StatisticStateMock)
+	playerList := SelectPlayerList(statisticStateMock)
 	assert.Equal(t, 2, len(playerList))
 	for _, playerItem := range playerList {
 		switch playerItem.PlayerKey {
@@ -23,7 +22,7 @@ func TestSelectPlayerList(t *testing.T) {
 }
 
 func TestSelectPlayerListForTeam(t *testing.T) {
-	playerList := SelectPlayerListForTeam(&models.StatisticStateMock, "1")
+	playerList := SelectPlayerListForTeam(statisticStateMock, "1")
 	assert.Equal(t, 1, len(playerList))
 	for _, playerItem := range playerList {
 		switch playerItem.PlayerKey {
@@ -36,7 +35,7 @@ func TestSelectPlayerListForTeam(t *testing.T) {
 }
 
 func TestSelectPlayerItem(t *testing.T) {
-	playerItem := SelectPlayerItem(&models.StatisticStateMock, "4")
+	playerItem := SelectPlayerItem(statisticStateMock, "4")
 	assert.NotNil(t, playerItem)
 	if playerItem != nil {
 		assert.Equal(t, "4", playerItem.PlayerKey)

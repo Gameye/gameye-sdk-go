@@ -1,16 +1,36 @@
-package test
+package clients
 
 import (
 	"fmt"
 	"net/http"
 )
 
+var port = 10000
+
 /*
-CreateAPITestServerMux creates the ServeMux for a api test server
+createAPITestServer creates a test server
 */
-func CreateAPITestServerMux(
-	state string,
-	patchChannel chan string,
+func createAPITestServer(
+	responseChannel chan string,
+) (
+	server *http.Server,
+) {
+	port++
+
+	mux := createAPITestServerMux(responseChannel)
+	server = &http.Server{
+		Handler: mux,
+		Addr:    ":" + fmt.Sprint(port),
+	}
+
+	return
+}
+
+/*
+createAPITestServerMux creates the ServeMux for a api test server
+*/
+func createAPITestServerMux(
+	responseChannel chan string,
 ) (
 	mux *http.ServeMux,
 ) {
@@ -27,7 +47,8 @@ func CreateAPITestServerMux(
 		accept := r.Header.Get("Accept")
 		switch accept {
 		case "application/json":
-			_, err = fmt.Fprintln(w, state)
+			response := responseChannel
+			_, err = fmt.Fprintln(w, <-response)
 			if err != nil {
 				panic(err)
 			}
@@ -45,8 +66,8 @@ func CreateAPITestServerMux(
 				case <-closeChannel:
 					return
 
-				case patch := <-patchChannel:
-					_, err = fmt.Fprintln(w, patch)
+				case response := <-responseChannel:
+					_, err = fmt.Fprintln(w, response)
 					if err != nil {
 						panic(err)
 					}

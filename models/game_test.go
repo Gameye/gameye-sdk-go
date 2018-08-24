@@ -16,7 +16,7 @@ func TestGameQueryState(t *testing.T) {
 
 	anyState := make(map[string]interface{})
 	{
-		reader := strings.NewReader(GameStateJSONMock)
+		reader := strings.NewReader(gameStateJSONMock)
 		decoder := json.NewDecoder(reader)
 		err = decoder.Decode(&anyState)
 		if err != nil {
@@ -27,5 +27,5 @@ func TestGameQueryState(t *testing.T) {
 	var state *GameQueryState
 	state, err = CreateGameQueryState(&anyState)
 
-	assert.Equal(t, GameStateMock, *state)
+	assert.Equal(t, gameStateMock, state)
 }
