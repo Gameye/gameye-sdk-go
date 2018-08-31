@@ -38,7 +38,7 @@ func (client GameyeClient) command(
 	}
 	defer res.Body.Close()
 
-	if res.StatusCode != 202 {
+	if res.StatusCode != 204 {
 		err = ErrUnexpectedStatus
 		return
 	}

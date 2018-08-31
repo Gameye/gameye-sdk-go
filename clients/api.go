@@ -39,7 +39,7 @@ func createAPITestServerMux(
 	}
 
 	handleAction := func(w http.ResponseWriter, r *http.Request) {
-		w.WriteHeader(http.StatusAccepted)
+		w.WriteHeader(http.StatusNoContent)
 	}
 
 	handleFetch := func(w http.ResponseWriter, r *http.Request) {
