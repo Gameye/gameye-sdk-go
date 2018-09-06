@@ -36,7 +36,7 @@ jobs:
           at: .
       - run: go get github.com/jstemmer/go-junit-report
       - run: mkdir -p /tmp/test-results
-      - run: go test ./clients ./models ./selectors ./utils -v | ~/go/bin/go-junit-report > /tmp/test-results/spec.xml
+      - run: go test -v -race ./clients ./models ./selectors ./utils | ~/go/bin/go-junit-report > /tmp/test-results/spec.xml
       - store_test_results: &store_test_results
           path: /tmp/test-results
 
@@ -49,7 +49,6 @@ workflows:
             tags:
               only: /.*?/
       - lint:
-          requires: [ prepare ]
           filters: *filter_all
       - spec:
           requires: [ prepare ]
