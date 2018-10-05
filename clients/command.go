@@ -29,6 +29,8 @@ func (client GameyeClient) command(
 	if err != nil {
 		return
 	}
+	
+	req.Header.Add("Content-Type", "application/json")
 	req.Header.Add("Authorization", authorization)
 
 	var res *http.Response
