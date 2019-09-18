@@ -85,10 +85,8 @@ func createAPITestServerMux(
 	mux.HandleFunc("/action/stop-match", handleAction)
 
 	mux.HandleFunc("/fetch/noop", handleFetch)
-	mux.HandleFunc("/fetch/game", handleFetch)
 	mux.HandleFunc("/fetch/match", handleFetch)
 	mux.HandleFunc("/fetch/statistic", handleFetch)
-	mux.HandleFunc("/fetch/template", handleFetch)
 
 	return
 }
