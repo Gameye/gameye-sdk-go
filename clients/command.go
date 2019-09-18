@@ -14,7 +14,7 @@ func (client GameyeClient) command(
 	err error,
 ) {
 
-	href := fmt.Sprintf("%s/action/%s", client.config.Endpoint, name)
+	href := fmt.Sprintf("%s/command/%s", client.config.Endpoint, name)
 	authorization := fmt.Sprintf("Bearer %s", client.config.Token)
 
 	var body []byte

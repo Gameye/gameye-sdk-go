@@ -80,15 +80,15 @@ func createAPITestServerMux(
 	mux = http.NewServeMux()
 	mux.HandleFunc("/noop", handleNoop)
 
-	mux.HandleFunc("/action/noop", handleAction)
-	mux.HandleFunc("/action/start-match", handleAction)
-	mux.HandleFunc("/action/stop-match", handleAction)
+	mux.HandleFunc("/command/noop", handleAction)
+	mux.HandleFunc("/command/start-match", handleAction)
+	mux.HandleFunc("/command/stop-match", handleAction)
 
-	mux.HandleFunc("/fetch/noop", handleFetch)
-	mux.HandleFunc("/fetch/game", handleFetch)
-	mux.HandleFunc("/fetch/match", handleFetch)
-	mux.HandleFunc("/fetch/statistic", handleFetch)
-	mux.HandleFunc("/fetch/template", handleFetch)
+	mux.HandleFunc("/query/noop", handleFetch)
+	mux.HandleFunc("/query/game", handleFetch)
+	mux.HandleFunc("/query/match", handleFetch)
+	mux.HandleFunc("/query/statistic", handleFetch)
+	mux.HandleFunc("/query/template", handleFetch)
 
 	return
 }

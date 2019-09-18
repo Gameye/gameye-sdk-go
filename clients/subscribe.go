@@ -25,7 +25,7 @@ func (client GameyeClient) subscribe(
 		querystring = fmt.Sprintf("?%s", querystring)
 	}
 
-	href := fmt.Sprintf("%s/fetch/%s%s", client.config.Endpoint, name, querystring)
+	href := fmt.Sprintf("%s/query/%s%s", client.config.Endpoint, name, querystring)
 	authorization := fmt.Sprintf("Bearer %s", client.config.Token)
 
 	var req *http.Request
