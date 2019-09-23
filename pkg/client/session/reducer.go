@@ -1,31 +1,31 @@
 package session
 
 import (
-	"log"
-
-	"github.com/mitchellh/mapstructure"
+	"encoding/json"
 
 	messages "github.com/Gameye/sdk-messages-go/pkg/event"
 )
 
 func copyPorts(in *map[string]int64) (out map[string]int64) {
+	out = make(map[string]int64)
 	for k, v := range *in {
 		out[k] = v
 	}
-	return
+	return out
 }
 
 func Reduce(state State, action *messages.UnionEvent) State {
 
-	var sessions map[string]Session
+	sessions := make(map[string]Session)
+
 	for k, v := range state.Sessions {
 		sessions[k] = v
 	}
 
 	switch action.Type {
 	case "session-initialized":
-		var sessionInit messages.SessionInitializedEventPayload
-		mapstructure.Decode(action.Payload, sessionInit)
+		sessionInit := new(messages.SessionInitializedEventPayload)
+		json.Unmarshal(*action.Payload, sessionInit)
 
 		for _, session := range sessionInit.Sessions {
 			sessions[session.Id] = Session{
@@ -38,8 +38,8 @@ func Reduce(state State, action *messages.UnionEvent) State {
 			}
 		}
 	case "session-started":
-		var sessionStarted messages.SessionStartedEventPayload
-		mapstructure.Decode(action.Payload, sessionStarted)
+		sessionStarted := new(messages.SessionStartedEventPayload)
+		json.Unmarshal(*action.Payload, sessionStarted)
 
 		sessions[sessionStarted.Session.Id] = Session{
 			Id:       sessionStarted.Session.Id,
@@ -50,9 +50,9 @@ func Reduce(state State, action *messages.UnionEvent) State {
 			Port:     copyPorts(&sessionStarted.Session.Port),
 		}
 	case "session-stopped":
-		var sessionStopped messages.SessionStoppedEventPayload
-		mapstructure.Decode(action.Payload, sessionStopped)
-		log.Printf("%v\n", sessionStopped)
+		sessionStopped := new(messages.SessionStoppedEventPayload)
+		json.Unmarshal(*action.Payload, sessionStopped)
+
 		delete(sessions, sessionStopped.Session.Id)
 	}
 

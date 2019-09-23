@@ -8,7 +8,7 @@ import (
 
 	"./session"
 	eventstream "github.com/Gameye/messaging-client-go/pkg/eventstream"
-	messages "github.com/Gameye/sdk-messages-go/pkg/event"
+	"github.com/Gameye/sdk-messages-go/pkg/event"
 )
 
 func SubscribeSessionEvents(gameyeClient GameyeClient) (err error) {
@@ -23,7 +23,7 @@ func SubscribeSessionEvents(gameyeClient GameyeClient) (err error) {
 
 	go func() {
 		for {
-			var action messages.UnionEvent
+			var action event.UnionEvent
 			decoder.Decode(&action)
 
 			if err == io.EOF {
