@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"../pkg/client"
+	"../pkg/client/session"
 	"github.com/google/uuid"
 )
 
@@ -23,6 +24,15 @@ func main() {
 		log.Fatal(err)
 	}
 
+	onSessionState := func(state session.State) {
+		foundSession := session.SelectSession(state, sessionID)
+		if foundSession.Id != "" {
+			log.Printf("Match Ready! %v", foundSession)
+		}
+	}
+
+	session.SubscribeState(onSessionState)
+
 	log.Printf("Starting Match %v\n", sessionID)
 	client.StartMatch(
 		gameyeClient,
@@ -40,4 +50,6 @@ func main() {
 	client.StopMatch(gameyeClient, sessionID)
 
 	time.Sleep(5 * time.Second)
+
+	session.SubscribeState(onSessionState)
 }
