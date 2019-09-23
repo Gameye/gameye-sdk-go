@@ -3,3 +3,5 @@ debug
 debug.test
 /vendor/
 *.exe
+logs.txt
+stats.txt

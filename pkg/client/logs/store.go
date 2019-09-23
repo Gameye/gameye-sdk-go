@@ -1,9 +1,9 @@
-package session
+package logs
 
 import (
 	"fmt"
 
-	messages "github.com/Gameye/sdk-messages-go/pkg/event"
+	"../patch"
 )
 
 type OnData func(State)
@@ -23,11 +23,9 @@ func UnsubscribeState(callback OnData) {
 	delete(subscriptions, fmt.Sprintf("%d", callback))
 }
 
-func Dispatch(action *messages.UnionEvent) {
-	if action.Type != "" {
-		state = Reduce(&state, action)
-		for _, callback := range subscriptions {
-			callback(state)
-		}
+func Dispatch(patches *[]patch.Patch) {
+	state = Reduce(&state, patches)
+	for _, callback := range subscriptions {
+		callback(state)
 	}
 }

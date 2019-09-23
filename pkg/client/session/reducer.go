@@ -14,7 +14,7 @@ func copyPorts(in *map[string]int64) (out map[string]int64) {
 	return out
 }
 
-func Reduce(state State, action *messages.UnionEvent) State {
+func Reduce(state *State, action *messages.UnionEvent) State {
 
 	sessions := make(map[string]Session)
 

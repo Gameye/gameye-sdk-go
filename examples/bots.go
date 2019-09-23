@@ -1,10 +1,14 @@
 package main
 
 import (
+	"fmt"
+	"io"
 	"log"
+	"os"
 	"time"
 
 	"../pkg/client"
+	"../pkg/client/logs"
 	"../pkg/client/session"
 	"github.com/google/uuid"
 )
@@ -19,11 +23,6 @@ func main() {
 	sessionID := uuid.New().String()
 
 	log.Printf("Subscribing to session events %v\n", sessionID)
-	err := client.SubscribeSessionEvents(gameyeClient)
-	if err != nil {
-		log.Fatal(err)
-	}
-
 	onSessionState := func(state session.State) {
 		foundSession := session.SelectSession(state, sessionID)
 		if foundSession.Id != "" {
@@ -31,7 +30,11 @@ func main() {
 		}
 	}
 
-	session.SubscribeState(onSessionState)
+	var err error
+	err = client.SubscribeSessionEvents(gameyeClient, onSessionState)
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	log.Printf("Starting Match %v\n", sessionID)
 	client.StartMatch(
@@ -44,12 +47,35 @@ func main() {
 		"",
 	)
 
-	time.Sleep(10 * time.Second)
+	currentLine := 0
+	allLogs := []logs.LogLine{}
+	onLogState := func(state logs.State) {
+		newLogs := logs.SelectLogsSince(state, currentLine)
+		for _, v := range newLogs {
+			log.Printf("%d: %s", v.LineKey, v.Payload)
+		}
+		currentLine += len(newLogs)
+		allLogs = logs.SelectAllLogs(state)
+	}
+
+	err = client.SubscribeLogEvents(gameyeClient, sessionID, onLogState)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	time.Sleep(15 * time.Second)
 
 	log.Printf("Stopping Match %v\n", sessionID)
 	client.StopMatch(gameyeClient, sessionID)
 
 	time.Sleep(5 * time.Second)
 
-	session.SubscribeState(onSessionState)
+	session.UnsubscribeState(onSessionState)
+	logs.UnsubscribeState(onLogState)
+
+	file, err := os.Create("logs.txt")
+	for _, v := range allLogs {
+		io.WriteString(file, fmt.Sprintf("%d: %s", v.LineKey, v.Payload))
+	}
+	file.Close()
 }
