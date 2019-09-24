@@ -2,6 +2,7 @@ package session
 
 import (
 	"encoding/json"
+	"log"
 
 	messages "github.com/Gameye/sdk-messages-go/pkg/event"
 )
@@ -17,43 +18,58 @@ func copyPorts(in *map[string]int64) (out map[string]int64) {
 func Reduce(state *State, action *messages.UnionEvent) State {
 
 	sessions := make(map[string]Session)
-
 	for k, v := range state.Sessions {
 		sessions[k] = v
 	}
 
+	var err error
+
 	switch action.Type {
 	case "session-initialized":
 		sessionInit := new(messages.SessionInitializedEventPayload)
-		json.Unmarshal(*action.Payload, sessionInit)
+		err = json.Unmarshal(*action.Payload, sessionInit)
 
-		for _, session := range sessionInit.Sessions {
-			sessions[session.Id] = Session{
-				Id:       session.Id,
-				Image:    session.Image,
-				Location: session.Location,
-				Host:     session.Host,
-				Created:  session.Created,
-				Port:     copyPorts(&session.Port),
+		if err == nil {
+			for _, session := range sessionInit.Sessions {
+				sessions[session.Id] = Session{
+					Id:       session.Id,
+					Image:    session.Image,
+					Location: session.Location,
+					Host:     session.Host,
+					Created:  session.Created,
+					Port:     copyPorts(&session.Port),
+				}
 			}
+		} else {
+			log.Printf("could not unmarshal json %v", err)
 		}
+
 	case "session-started":
 		sessionStarted := new(messages.SessionStartedEventPayload)
-		json.Unmarshal(*action.Payload, sessionStarted)
+		err = json.Unmarshal(*action.Payload, sessionStarted)
 
-		sessions[sessionStarted.Session.Id] = Session{
-			Id:       sessionStarted.Session.Id,
-			Image:    sessionStarted.Session.Image,
-			Location: sessionStarted.Session.Location,
-			Host:     sessionStarted.Session.Host,
-			Created:  sessionStarted.Session.Created,
-			Port:     copyPorts(&sessionStarted.Session.Port),
+		if err == nil {
+			sessions[sessionStarted.Session.Id] = Session{
+				Id:       sessionStarted.Session.Id,
+				Image:    sessionStarted.Session.Image,
+				Location: sessionStarted.Session.Location,
+				Host:     sessionStarted.Session.Host,
+				Created:  sessionStarted.Session.Created,
+				Port:     copyPorts(&sessionStarted.Session.Port),
+			}
+		} else {
+			log.Printf("could not unmarshal json %v", err)
 		}
+
 	case "session-stopped":
 		sessionStopped := new(messages.SessionStoppedEventPayload)
-		json.Unmarshal(*action.Payload, sessionStopped)
+		err = json.Unmarshal(*action.Payload, sessionStopped)
 
-		delete(sessions, sessionStopped.Session.Id)
+		if err == nil {
+			delete(sessions, sessionStopped.Session.Id)
+		} else {
+			log.Printf("could not unmarshal json %v", err)
+		}
 	}
 
 	return StateWithSessions(sessions)

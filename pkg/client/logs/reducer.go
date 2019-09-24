@@ -3,6 +3,7 @@ package logs
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 
 	"../patch"
 	"github.com/Gameye/gameye-sdk-go/utils"
@@ -21,12 +22,16 @@ func Reduce(state *State, patches *[]patch.Patch) State {
 	patchDocument := make(map[string]interface{})
 	patchDocument = utils.SetIn(patchDocument, []string{}, state.Logs)
 
-	for _, patch := range *patches {
-		if patch.Value != nil {
+	for _, singlePatch := range *patches {
+		if singlePatch.Value != nil {
 			var initializer map[string]interface{}
-			json.Unmarshal(*patch.Value, &initializer)
-			path := convertPath(patch.Path)
-			patchDocument = utils.SetIn(patchDocument, path, initializer)
+			err := json.Unmarshal(*singlePatch.Value, &initializer)
+			if err == nil {
+				path := convertPath(singlePatch.Path)
+				patchDocument = utils.SetIn(patchDocument, path, initializer)
+			} else {
+				log.Printf("could not unmarshal json %v", err)
+			}
 		}
 	}
 

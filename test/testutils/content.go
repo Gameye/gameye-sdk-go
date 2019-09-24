@@ -11,7 +11,7 @@ func ReadFileAsJSON(path string) (deserializedFile map[string]interface{}, err e
 		return nil, err
 	}
 
-	result := map[string]interface{} {}
+	result := map[string]interface{}{}
 	err = json.Unmarshal(data, &result)
 	if err != nil {
 		return nil, err

@@ -11,12 +11,12 @@ import (
 	"./testutils"
 )
 
-func readStats() (json map[string]interface{}) {
-	json, err := testutils.ReadFileAsJSON("./content/stats.json")
+func readStats() (result map[string]interface{}) {
+	result, err := testutils.ReadFileAsJSON("./content/stats.json")
 	if err != nil {
 		log.Fatal(err)
 	}
-	return json
+	return result
 }
 
 func TestSelectsAllPlayers(test *testing.T) {
@@ -31,7 +31,6 @@ func TestSelectsAllPlayers(test *testing.T) {
 		}
 	}
 }
-
 
 func TestSelectsOnlyRequestedPlayers(test *testing.T) {
 	state := statistics.StateWithStatistics(readStats())
@@ -60,6 +59,10 @@ func TestSelectsOnlyRequestedPlayers(test *testing.T) {
 	}
 
 	assert.Equal(test, 2, assertions)
+
+	found, err := statistics.SelectPlayer(state, "9")
+	assert.Nil(test, err)
+	assert.Equal(test, "Vladimir", found.Name)
 }
 
 func TestSelectsAllTeams(test *testing.T) {

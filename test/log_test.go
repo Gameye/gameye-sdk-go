@@ -31,5 +31,5 @@ func TestSelectsOnlyRequestedLogs(test *testing.T) {
 	state := logs.StateWithLogs(readLogs())
 	filtered := logs.SelectLogsSince(state, 912)
 
-	assert.Equal(test, 1095 - 912, len(filtered))
+	assert.Equal(test, 1095-912, len(filtered))
 }

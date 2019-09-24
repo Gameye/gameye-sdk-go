@@ -15,11 +15,15 @@ import (
 )
 
 func main() {
+	var err error
+
 	config := client.GameyeClientConfig{
 		Endpoint: "",
 		Token:    "",
 	}
-	gameyeClient := client.NewGameyeClient(config)
+
+	gameyeClient, err := client.NewGameyeClient(config)
+	handleErr(err)
 
 	sessionID := uuid.New().String()
 
@@ -31,7 +35,6 @@ func main() {
 		}
 	}
 
-	var err error
 	err = client.SubscribeSessionEvents(gameyeClient, onSessionState)
 	handleErr(err)
 
@@ -48,7 +51,7 @@ func main() {
 	handleErr(err)
 
 	currentLine := 0
-	allLogs := []logs.LogLine{}
+	var allLogs []logs.LogLine
 	onLogState := func(state logs.State) {
 		newLogs := logs.SelectLogsSince(state, currentLine)
 		for _, v := range newLogs {
@@ -79,20 +82,23 @@ func main() {
 
 	time.Sleep(5 * time.Second)
 
-	session.UnsubscribeState(onSessionState)
-	logs.UnsubscribeState(onLogState)
-
 	file, err := os.Create("logs.txt")
-	handleErr(err)
-	for _, v := range allLogs {
-		io.WriteString(file, fmt.Sprintf("%d: %s", v.LineKey, v.Payload))
+	if file != nil && allLogs != nil {
+		for _, v := range allLogs {
+			_, err = io.WriteString(file, fmt.Sprintf("%d: %s", v.LineKey, v.Payload))
+		}
+
+		err = file.Close()
+		handleErr(err)
 	}
-	file.Close()
 
 	file, err = os.Create("stats.txt")
-	handleErr(err)
-	io.WriteString(file, rawStats)
-	file.Close()
+	if file != nil {
+		_, err = io.WriteString(file, rawStats)
+		err = file.Close()
+		handleErr(err)
+	}
+
 }
 
 func handleErr(err error) {

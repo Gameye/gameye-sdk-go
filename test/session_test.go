@@ -19,7 +19,7 @@ func createSession(gameKey string, sessionID string) (string, session.Session) {
 		gameKey = uuid.New().String()
 	}
 
-	session := session.Session{
+	created := session.Session{
 		Id:       sessionID,
 		Image:    gameKey,
 		Location: "amsterdam",
@@ -28,15 +28,15 @@ func createSession(gameKey string, sessionID string) (string, session.Session) {
 		Port:     map[string]int64{"game": 1234},
 	}
 
-	return sessionID, session
+	return sessionID, created
 }
 
 func TestSelectsAllSessions(test *testing.T) {
 	unnamedSessions := 15
 	sessions := make(map[string]session.Session, unnamedSessions)
 	for i := 0; i < unnamedSessions; i++ {
-		id, session := createSession("", "")
-		sessions[id] = session
+		id, created := createSession("", "")
+		sessions[id] = created
 	}
 
 	state := session.StateWithSessions(sessions)
@@ -47,15 +47,15 @@ func TestSelectsAllSessions(test *testing.T) {
 func TestSelectsOnlyRequestedSessions(test *testing.T) {
 	unnamedSessions := 5
 	namedSessions := 5
-	sessions := make(map[string]session.Session, unnamedSessions + namedSessions)
+	sessions := make(map[string]session.Session, unnamedSessions+namedSessions)
 	for i := 0; i < unnamedSessions; i++ {
-		id, session := createSession("", "")
-		sessions[id] = session
+		id, created := createSession("", "")
+		sessions[id] = created
 	}
 
 	for i := 0; i < namedSessions; i++ {
-		id, session := createSession("game-two", "")
-		sessions[id] = session
+		id, created := createSession("game-two", "")
+		sessions[id] = created
 	}
 
 	state := session.StateWithSessions(sessions)
@@ -65,10 +65,10 @@ func TestSelectsOnlyRequestedSessions(test *testing.T) {
 
 func TestSelectsASessions(test *testing.T) {
 	unnamedSessions := 15
-	sessions := make(map[string]session.Session, unnamedSessions + 1)
+	sessions := make(map[string]session.Session, unnamedSessions+1)
 	for i := 0; i < unnamedSessions; i++ {
-		id, session := createSession("", "")
-		sessions[id] = session
+		id, created := createSession("", "")
+		sessions[id] = created
 	}
 
 	id, specificSession := createSession("specific-game", "session-id-one")

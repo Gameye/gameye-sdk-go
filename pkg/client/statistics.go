@@ -15,7 +15,7 @@ func SubscribeStatisticsEvents(gameyeClient GameyeClient, matchKey string, onSta
 	ctx := context.Background()
 	url := fmt.Sprintf("%s/fetch/statistic", gameyeClient.config.Endpoint)
 
-	statistics.SubscribeState(onStateChanged)
+	statistics.SubscribeState("client.statistics.internal", onStateChanged)
 	decoder, err := eventstream.Create(
 		ctx,
 		url,
@@ -29,19 +29,19 @@ func SubscribeStatisticsEvents(gameyeClient GameyeClient, matchKey string, onSta
 
 	go func() {
 		for {
-			patches := []patch.Patch{}
+			var patches []patch.Patch
 			decoder.Decode(&patches)
 
 			if err == io.EOF {
 				break
 			} else if err != nil {
 				log.Println(err)
-			} else if len(patches) > 0 {
+			} else if patches != nil && len(patches) > 0 {
 				statistics.Dispatch(&patches)
 			}
 		}
 
-		statistics.UnsubscribeState(onStateChanged)
+		statistics.UnsubscribeState("client.statistics.internal")
 	}()
 
 	return nil

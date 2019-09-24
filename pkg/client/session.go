@@ -15,7 +15,7 @@ func SubscribeSessionEvents(gameyeClient GameyeClient, onStateChanged func(sessi
 	ctx := context.Background()
 	url := fmt.Sprintf("%s/fetch/session", gameyeClient.config.Endpoint)
 
-	session.SubscribeState(onStateChanged)
+	session.SubscribeState("client.session.internal", onStateChanged)
 	decoder, err := eventstream.Create(ctx, url, nil, getStreamHeaders(gameyeClient.config))
 
 	if err != nil {
@@ -36,7 +36,7 @@ func SubscribeSessionEvents(gameyeClient GameyeClient, onStateChanged func(sessi
 			}
 		}
 
-		session.UnsubscribeState(onStateChanged)
+		session.UnsubscribeState("client.session.internal")
 	}()
 
 	return nil

@@ -17,10 +17,12 @@ type GameyeClient struct {
 /*
 NewGameyeClient will create a new GameyeClient
 */
-func NewGameyeClient(config GameyeClientConfig) (
-	client GameyeClient,
-) {
-	config.validate()
+func NewGameyeClient(config GameyeClientConfig) (client GameyeClient, err error) {
+	err = config.validate()
+	if err != nil {
+		return GameyeClient{}, err
+	}
+
 	httpClient := &http.Client{}
 
 	client = GameyeClient{
@@ -28,7 +30,7 @@ func NewGameyeClient(config GameyeClientConfig) (
 		httpClient,
 	}
 
-	return
+	return client, nil
 }
 
 const heartbeat = 10 * 1000
