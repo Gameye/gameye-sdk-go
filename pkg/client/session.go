@@ -11,6 +11,7 @@ import (
 	"github.com/Gameye/sdk-messages-go/pkg/event"
 )
 
+// SubscribeSessionEvents adds a subscriber to session events
 func SubscribeSessionEvents(gameyeClient GameyeClient, onStateChanged func(session.State)) (err error) {
 	ctx := context.Background()
 	url := fmt.Sprintf("%s/fetch/session", gameyeClient.config.Endpoint)

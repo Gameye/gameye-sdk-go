@@ -11,6 +11,7 @@ import (
 	"github.com/Gameye/messaging-client-go/pkg/eventstream"
 )
 
+// SubscribeLogEvents adds a subscriber to log events
 func SubscribeLogEvents(gameyeClient GameyeClient, matchKey string, onStateChanged func(logs.State)) (err error) {
 	ctx := context.Background()
 	url := fmt.Sprintf("%s/fetch/log", gameyeClient.config.Endpoint)

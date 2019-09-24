@@ -7,6 +7,7 @@ import (
 	messages "github.com/Gameye/sdk-messages-go/pkg/command"
 )
 
+// StartMatch starts a new match with the given paramters
 func StartMatch(client GameyeClient,
 	matchKey string,
 	gameKey string,
@@ -37,6 +38,7 @@ func StartMatch(client GameyeClient,
 	return err
 }
 
+// StopMatch ends a match with the given matchKey
 func StopMatch(client GameyeClient, matchKey string) (err error) {
 
 	action := messages.StopMatchCommand{

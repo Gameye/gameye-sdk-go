@@ -17,7 +17,7 @@ func convertPath(inPath []interface{}) (outPath []string) {
 	return outPath
 }
 
-func Reduce(state *State, patches *[]patch.Patch) State {
+func reduce(state *State, patches *[]patch.Patch) State {
 
 	patchDocument := make(map[string]interface{})
 	patchDocument = utils.SetIn(patchDocument, []string{}, state.Statistics)

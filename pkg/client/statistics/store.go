@@ -22,7 +22,7 @@ func UnsubscribeState(name string) {
 }
 
 func Dispatch(patches *[]patch.Patch) {
-	state = Reduce(&state, patches)
+	state = reduce(&state, patches)
 	for _, callback := range subscriptions {
 		callback(state)
 	}

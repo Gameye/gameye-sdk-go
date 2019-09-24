@@ -23,7 +23,7 @@ func UnsubscribeState(name string) {
 
 func Dispatch(action *messages.UnionEvent) {
 	if action.Type != "" {
-		state = Reduce(&state, action)
+		state = reduce(&state, action)
 		for _, callback := range subscriptions {
 			callback(state)
 		}
