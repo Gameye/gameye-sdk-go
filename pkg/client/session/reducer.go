@@ -41,7 +41,7 @@ func reduce(state *State, action *messages.UnionEvent) State {
 				}
 			}
 		} else {
-			log.Printf("could not unmarshal json %v", err)
+			log.Printf("session.reduce.session-initialized could not unmarshal; %v", err)
 		}
 
 	case "session-started":
@@ -58,7 +58,7 @@ func reduce(state *State, action *messages.UnionEvent) State {
 				Port:     copyPorts(&sessionStarted.Session.Port),
 			}
 		} else {
-			log.Printf("could not unmarshal json %v", err)
+			log.Printf("session.reduce.session-started could not unmarshal; %v", err)
 		}
 
 	case "session-stopped":
@@ -68,7 +68,7 @@ func reduce(state *State, action *messages.UnionEvent) State {
 		if err == nil {
 			delete(sessions, sessionStopped.Session.Id)
 		} else {
-			log.Printf("could not unmarshal json %v", err)
+			log.Printf("session.reduce.session-stopped could not unmarshal; %v", err)
 		}
 	}
 

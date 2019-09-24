@@ -31,7 +31,7 @@ func reduce(state *State, patches *[]patch.Patch) State {
 				path := convertPath(singlePatch.Path)
 				patchDocument = utils.SetIn(patchDocument, path, initializer)
 			} else {
-				log.Printf("could not unmarshal json %v", err)
+				log.Printf("statistics.reduce could not unmarshal; %v", err)
 			}
 		}
 	}
