@@ -6,6 +6,7 @@ import (
 	"strconv"
 )
 
+// SelectAllLogs returns all logs from the store
 func SelectAllLogs(state State) (logLines []LogLine) {
 	rawLogs := state.Logs["line"]
 	if rawLogs != nil {
@@ -29,6 +30,7 @@ func SelectAllLogs(state State) (logLines []LogLine) {
 	return logLines
 }
 
+// SelectLogsSince returns logs after the given line number
 func SelectLogsSince(state State, lineNumber int) (logLines []LogLine) {
 	rawLogs := state.Logs["line"]
 	if rawLogs != nil {

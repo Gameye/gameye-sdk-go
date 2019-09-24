@@ -33,6 +33,7 @@ func findPlayer(players []Player, playerKey string) (player Player, err error) {
 	return Player{}, errors.New("could not find player with key")
 }
 
+// SelectRawStatistics returns a json string containing all the unprocessed statistics
 func SelectRawStatistics(state State) (statisticsJson string, err error) {
 	bytes, err := json.MarshalIndent(state.Statistics, "", "    ")
 	if err != nil {
@@ -42,6 +43,7 @@ func SelectRawStatistics(state State) (statisticsJson string, err error) {
 	return string(bytes), nil
 }
 
+// SelectPlayerList returns all the players
 func SelectPlayerList(state State) (players []Player) {
 	players = []Player{}
 	rawStats := state.Statistics["statistic"].(map[string]interface{})
@@ -65,6 +67,7 @@ func SelectPlayerList(state State) (players []Player) {
 	return players
 }
 
+// SelectTeamList returns all the teams
 func SelectTeamList(state State) (teams []Team) {
 	teams = []Team{}
 	rawStats := state.Statistics["statistic"].(map[string]interface{})
@@ -84,6 +87,7 @@ func SelectTeamList(state State) (teams []Team) {
 	return teams
 }
 
+// SelectTeam returns a team for the given teamKey
 func SelectTeam(state State, teamKey string) (team Team, err error) {
 	teams := SelectTeamList(state)
 	for _, v := range teams {
@@ -95,6 +99,7 @@ func SelectTeam(state State, teamKey string) (team Team, err error) {
 	return Team{}, errors.New("could not find team with that key")
 }
 
+// SelectPlayerListForTeam returns the a slice of the players on the team matching the given teamKey
 func SelectPlayerListForTeam(state State, teamKey string) (players []Player, err error) {
 	players = []Player{}
 
@@ -121,11 +126,13 @@ func SelectPlayerListForTeam(state State, teamKey string) (players []Player, err
 	return players, err
 }
 
+// SelectPlayer returns a player with the given playerKey
 func SelectPlayer(state State, playerKey string) (player Player, err error) {
 	players := SelectPlayerList(state)
 	return findPlayer(players, playerKey)
 }
 
+// SelectRounds returns the number of started rounds
 func SelectRounds(state State) (rounds int) {
 	rawStats := state.Statistics["statistic"].(map[string]interface{})
 	rounds = int(rawStats["startedRounds"].(float64))
