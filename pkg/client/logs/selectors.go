@@ -1,6 +1,10 @@
 package logs
 
-import "sort"
+import (
+	"fmt"
+	"sort"
+	"strconv"
+)
 
 func SelectAllLogs(state State) (logLines []LogLine) {
 	rawLogs := state.Logs["line"]
@@ -8,8 +12,9 @@ func SelectAllLogs(state State) (logLines []LogLine) {
 		for _, v := range rawLogs.(map[string]interface{}) {
 			rawLine := v.(map[string]interface{})
 			if rawLine != nil {
+				lineKeyInt, _ := strconv.Atoi(fmt.Sprintf("%v", rawLine["lineKey"]))
 				logLine := LogLine{
-					LineKey: int(rawLine["lineKey"].(float64)),
+					LineKey: lineKeyInt,
 					Payload: rawLine["payload"].(string),
 				}
 				logLines = append(logLines, logLine)
@@ -30,8 +35,9 @@ func SelectLogsSince(state State, lineNumber int) (logLines []LogLine) {
 		for _, v := range rawLogs.(map[string]interface{}) {
 			rawLine := v.(map[string]interface{})
 			if rawLine != nil {
+				lineKeyInt, _ := strconv.Atoi(fmt.Sprintf("%v", rawLine["lineKey"]))
 				logLine := LogLine{
-					LineKey: int(rawLine["lineKey"].(float64)),
+					LineKey: lineKeyInt,
 					Payload: rawLine["payload"].(string),
 				}
 				if logLine.LineKey > lineNumber {

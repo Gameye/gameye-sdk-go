@@ -34,7 +34,7 @@ func findPlayer(players []Player, playerKey string) (player Player, err error) {
 }
 
 func SelectRawStatistics(state State) (statisticsJson string, err error) {
-	bytes, err := json.Marshal(state.Statistics)
+	bytes, err := json.MarshalIndent(state.Statistics, "", "    ")
 	if err != nil {
 		err := errors.New("error marshaling statistics into Json")
 		return "", err

@@ -71,7 +71,7 @@ func main() {
 	err = client.SubscribeStatisticsEvents(gameyeClient, sessionID, onStatisticsState)
 	handleErr(err)
 
-	time.Sleep(15 * time.Second)
+	time.Sleep(30 * time.Second)
 
 	log.Printf("Stopping Match %v\n", sessionID)
 	err = client.StopMatch(gameyeClient, sessionID)
