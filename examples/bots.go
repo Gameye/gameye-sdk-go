@@ -1,17 +1,15 @@
 package main
 
 import (
-	"fmt"
-	"io"
-	"log"
-	"os"
-	"time"
-
 	"../pkg/client"
 	"../pkg/client/logs"
 	"../pkg/client/session"
 	"../pkg/client/statistics"
+	"fmt"
 	"github.com/google/uuid"
+	"io"
+	"log"
+	"os"
 )
 
 func main() {
@@ -27,12 +25,14 @@ func main() {
 
 	sessionID := uuid.New().String()
 
+	var activeSession = make(chan session.Session)
 	log.Printf("Subscribing to session events %v\n", sessionID)
 	onSessionState := func(state session.State) {
 		foundSession := session.SelectSession(state, sessionID)
 		if foundSession.Id != "" {
 			log.Printf("Match Ready! %v", foundSession)
 		}
+		activeSession <- foundSession
 	}
 
 	err = client.SubscribeSessionEvents(gameyeClient, onSessionState)
@@ -74,13 +74,23 @@ func main() {
 	err = client.SubscribeStatisticsEvents(gameyeClient, sessionID, onStatisticsState)
 	handleErr(err)
 
-	time.Sleep(30 * time.Second)
+	// Wait for a session to not be empty
+	for currentSession := range activeSession {
+		if currentSession.Id != "" {
+			break
+		}
+	}
 
-	log.Printf("Stopping Match %v\n", sessionID)
-	err = client.StopMatch(gameyeClient, sessionID)
-	handleErr(err)
+	log.Printf("Session found %v\n", sessionID)
 
-	time.Sleep(5 * time.Second)
+	// Wait for a session to become empty
+	for currentSession := range activeSession {
+		if currentSession.Id == "" {
+			break
+		}
+	}
+
+	log.Printf("Match finished %v\n", sessionID)
 
 	file, err := os.Create("logs.txt")
 	if file != nil && allLogs != nil {

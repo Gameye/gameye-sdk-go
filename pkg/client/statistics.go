@@ -31,12 +31,13 @@ func SubscribeStatisticsEvents(gameyeClient GameyeClient, matchKey string, onSta
 	go func() {
 		for {
 			var patches []patch.Patch
-			decoder.Decode(&patches)
+			err = decoder.Decode(&patches)
 
 			if err == io.EOF {
 				break
 			} else if err != nil {
 				log.Println(err)
+				break
 			} else if patches != nil && len(patches) > 0 {
 				statistics.Dispatch(&patches)
 			}

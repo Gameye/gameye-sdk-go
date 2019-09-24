@@ -26,12 +26,13 @@ func SubscribeSessionEvents(gameyeClient GameyeClient, onStateChanged func(sessi
 	go func() {
 		for {
 			var action event.UnionEvent
-			decoder.Decode(&action)
+			err = decoder.Decode(&action)
 
 			if err == io.EOF {
 				break
 			} else if err != nil {
 				log.Println(err)
+				break
 			} else {
 				session.Dispatch(&action)
 			}
