@@ -20,7 +20,7 @@ func createSession(gameKey string, sessionID string) (string, session.Session) {
 	}
 
 	created := session.Session{
-		Id:       sessionID,
+		ID:       sessionID,
 		Image:    gameKey,
 		Location: "amsterdam",
 		Host:     "127.0.0.1",
@@ -79,5 +79,5 @@ func TestSelectsASessions(test *testing.T) {
 	assert.Equal(test, "specific-game", foundSession.Image)
 
 	foundSession = session.SelectSession(state, "some-key-that-shouldnt-exist")
-	assert.Equal(test, "", foundSession.Id)
+	assert.Equal(test, "", foundSession.ID)
 }

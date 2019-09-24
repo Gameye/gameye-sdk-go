@@ -1,7 +1,8 @@
 package session
 
+// Session represents a game session identified by ID
 type Session struct {
-	Id       string           `json:"id"`
+	ID       string           `json:"id"`
 	Image    string           `json:"image"`
 	Location string           `json:"location"`
 	Host     string           `json:"host"`

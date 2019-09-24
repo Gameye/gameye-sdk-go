@@ -29,7 +29,7 @@ func main() {
 	log.Printf("Subscribing to session events %v\n", sessionID)
 	onSessionState := func(state session.State) {
 		foundSession := session.SelectSession(state, sessionID)
-		if foundSession.Id != "" {
+		if foundSession.ID != "" {
 			log.Printf("Match Ready! %v", foundSession)
 		}
 		activeSession <- foundSession
@@ -76,7 +76,7 @@ func main() {
 
 	// Wait for a session to not be empty
 	for currentSession := range activeSession {
-		if currentSession.Id != "" {
+		if currentSession.ID != "" {
 			break
 		}
 	}
@@ -85,7 +85,7 @@ func main() {
 
 	// Wait for a session to become empty
 	for currentSession := range activeSession {
-		if currentSession.Id == "" {
+		if currentSession.ID == "" {
 			break
 		}
 	}

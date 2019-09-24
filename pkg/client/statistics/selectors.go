@@ -34,7 +34,7 @@ func findPlayer(players []Player, playerKey string) (player Player, err error) {
 }
 
 // SelectRawStatistics returns a json string containing all the unprocessed statistics
-func SelectRawStatistics(state State) (statisticsJson string, err error) {
+func SelectRawStatistics(state State) (statisticsJSON string, err error) {
 	bytes, err := json.MarshalIndent(state.Statistics, "", "    ")
 	if err != nil {
 		err := errors.New("error marshaling statistics into Json")
@@ -53,7 +53,7 @@ func SelectPlayerList(state State) (players []Player) {
 		playerStats := player["statistic"].(map[string]interface{})
 		players = append(players, Player{
 			PlayerKey: player["playerKey"].(string),
-			Uid:       player["uid"].(string),
+			UID:       player["uid"].(string),
 			Connected: player["connected"].(bool),
 			Name:      player["name"].(string),
 			Statistic: copyStats(&playerStats),

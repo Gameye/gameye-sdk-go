@@ -18,7 +18,7 @@ func SelectSessionList(state State) (sessions []Session) {
 	return sessions
 }
 
-// SelectSession returns a session for the given sessionId
-func SelectSession(state State, sessionId string) (session Session) {
-	return state.Sessions[sessionId]
+// SelectSession returns a session for the given sessionID
+func SelectSession(state State, sessionID string) (session Session) {
+	return state.Sessions[sessionID]
 }

@@ -32,7 +32,7 @@ func reduce(state *State, action *messages.UnionEvent) State {
 		if err == nil {
 			for _, session := range sessionInit.Sessions {
 				sessions[session.Id] = Session{
-					Id:       session.Id,
+					ID:       session.Id,
 					Image:    session.Image,
 					Location: session.Location,
 					Host:     session.Host,
@@ -50,7 +50,7 @@ func reduce(state *State, action *messages.UnionEvent) State {
 
 		if err == nil {
 			sessions[sessionStarted.Session.Id] = Session{
-				Id:       sessionStarted.Session.Id,
+				ID:       sessionStarted.Session.Id,
 				Image:    sessionStarted.Session.Image,
 				Location: sessionStarted.Session.Location,
 				Host:     sessionStarted.Session.Host,
