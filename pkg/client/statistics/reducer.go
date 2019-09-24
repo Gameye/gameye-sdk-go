@@ -24,14 +24,14 @@ func reduce(state *State, patches *[]patch.Patch) State {
 
 	for _, singlePatch := range *patches {
 		if singlePatch.Value != nil {
-			var initializer map[string]interface{}
+			var initializer interface{}
 			err := json.Unmarshal(*singlePatch.Value, &initializer)
+			path := convertPath(singlePatch.Path)
 
 			if err == nil {
-				path := convertPath(singlePatch.Path)
 				patchDocument = utils.SetIn(patchDocument, path, initializer)
 			} else {
-				log.Printf("statistics.reduce could not unmarshal; %v", err)
+				log.Printf("statistics.reduce could not unmarshal %v; %v", path, err)
 			}
 		}
 	}
