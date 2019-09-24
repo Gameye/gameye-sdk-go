@@ -10,6 +10,7 @@ import (
 	"../pkg/client"
 	"../pkg/client/logs"
 	"../pkg/client/session"
+	"../pkg/client/statistics"
 	"github.com/google/uuid"
 )
 
@@ -32,12 +33,10 @@ func main() {
 
 	var err error
 	err = client.SubscribeSessionEvents(gameyeClient, onSessionState)
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleErr(err)
 
 	log.Printf("Starting Match %v\n", sessionID)
-	client.StartMatch(
+	err = client.StartMatch(
 		gameyeClient,
 		sessionID,
 		"csgo-dem",
@@ -46,6 +45,7 @@ func main() {
 		map[string]interface{}{"maxRounds": 2},
 		"",
 	)
+	handleErr(err)
 
 	currentLine := 0
 	allLogs := []logs.LogLine{}
@@ -59,14 +59,23 @@ func main() {
 	}
 
 	err = client.SubscribeLogEvents(gameyeClient, sessionID, onLogState)
-	if err != nil {
-		log.Fatal(err)
+	handleErr(err)
+
+	rawStats := ""
+	onStatisticsState := func(state statistics.State) {
+		statistics.SelectPlayerList(state)
+		rawStats, err = statistics.SelectRawStatistics(state)
+		handleErr(err)
 	}
+
+	err = client.SubscribeStatisticsEvents(gameyeClient, sessionID, onStatisticsState)
+	handleErr(err)
 
 	time.Sleep(15 * time.Second)
 
 	log.Printf("Stopping Match %v\n", sessionID)
-	client.StopMatch(gameyeClient, sessionID)
+	err = client.StopMatch(gameyeClient, sessionID)
+	handleErr(err)
 
 	time.Sleep(5 * time.Second)
 
@@ -74,8 +83,20 @@ func main() {
 	logs.UnsubscribeState(onLogState)
 
 	file, err := os.Create("logs.txt")
+	handleErr(err)
 	for _, v := range allLogs {
 		io.WriteString(file, fmt.Sprintf("%d: %s", v.LineKey, v.Payload))
 	}
 	file.Close()
+
+	file, err = os.Create("stats.txt")
+	handleErr(err)
+	io.WriteString(file, rawStats)
+	file.Close()
+}
+
+func handleErr(err error) {
+	if err != nil {
+		log.Fatal(err)
+	}
 }

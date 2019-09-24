@@ -1,4 +1,4 @@
-package logs
+package statistics
 
 import (
 	"encoding/json"
@@ -19,7 +19,7 @@ func convertPath(inPath []interface{}) (outPath []string) {
 func Reduce(state *State, patches *[]patch.Patch) State {
 
 	patchDocument := make(map[string]interface{})
-	patchDocument = utils.SetIn(patchDocument, []string{}, state.Logs)
+	patchDocument = utils.SetIn(patchDocument, []string{}, state.Statistics)
 
 	for _, patch := range *patches {
 		if patch.Value != nil {
@@ -30,5 +30,5 @@ func Reduce(state *State, patches *[]patch.Patch) State {
 		}
 	}
 
-	return StateWithLogs(patchDocument)
+	return StateWithStatistics(patchDocument)
 }

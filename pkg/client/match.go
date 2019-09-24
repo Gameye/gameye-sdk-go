@@ -3,7 +3,7 @@ package client
 import (
 	"fmt"
 
-	command "github.com/Gameye/messaging-client-go/pkg/command"
+	"github.com/Gameye/messaging-client-go/pkg/command"
 	messages "github.com/Gameye/sdk-messages-go/pkg/command"
 )
 

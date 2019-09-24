@@ -7,7 +7,7 @@ import (
 	"log"
 
 	"./session"
-	eventstream "github.com/Gameye/messaging-client-go/pkg/eventstream"
+	"github.com/Gameye/messaging-client-go/pkg/eventstream"
 	"github.com/Gameye/sdk-messages-go/pkg/event"
 )
 
