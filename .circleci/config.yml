@@ -4,6 +4,9 @@ jobs:
   lint-go:
     docker: &docker_go
       - image: circleci/golang:1.11
+    environment: &env_go
+      GOPATH: /home/circleci/go
+    working_directory: /home/circleci/go/src/github.com/Gameye/gameye-sdk-go
     steps:
       - checkout
       - run: go get golang.org/x/lint/golint
@@ -11,6 +14,8 @@ jobs:
 
   test-go:
     docker: *docker_go
+    environment: *env_go
+    working_directory: /home/circleci/go/src/github.com/Gameye/gameye-sdk-go
     steps:
       - checkout
       - run: go get -t ./...
@@ -18,6 +23,8 @@ jobs:
 
   vet-go:
     docker: *docker_go
+    environment: *env_go
+    working_directory: /home/circleci/go/src/github.com/Gameye/gameye-sdk-go
     steps:
       - checkout
       - run: go get -t ./...
