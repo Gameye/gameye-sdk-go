@@ -4,28 +4,24 @@ jobs:
   lint-go:
     docker: &docker_go
       - image: circleci/golang:1.11
-    environment: &env_go
-      GOPATH: /home/circleci/go
     steps:
       - checkout
       - run: go get golang.org/x/lint/golint
-      - run: golint -set_exit_status ./...
+      - run: golint -set_exit_status ./pkg/...
 
   test-go:
     docker: *docker_go
-    environment: *env_go
     steps:
       - checkout
-      - run: go get -t ./...
-      - run: go test -v ./...
+      - run: go get -t ./pkg/...
+      - run: go test -v ./pkg/...
 
   vet-go:
     docker: *docker_go
-    environment: *env_go
     steps:
       - checkout
-      - run: go get -t ./...
-      - run: go vet ./...
+      - run: go get -t ./pkg/...
+      - run: go vet ./pkg/...
 
 workflows:
   version: 2
