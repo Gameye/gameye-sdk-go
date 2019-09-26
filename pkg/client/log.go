@@ -14,7 +14,7 @@ import (
 // SubscribeLogEvents adds a subscriber to log events
 func SubscribeLogEvents(gameyeClient GameyeClient, matchKey string, onStateChanged func(logs.State)) (err error) {
 	ctx := context.Background()
-	url := fmt.Sprintf("%s/fetch/log", gameyeClient.config.Endpoint)
+	url := fmt.Sprintf("%s/query/log", gameyeClient.config.Endpoint)
 
 	logs.SubscribeState("client.log.internal", onStateChanged)
 	decoder, err := eventstream.Create(

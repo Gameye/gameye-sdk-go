@@ -14,7 +14,7 @@ import (
 // SubscribeSessionEvents adds a subscriber to session events
 func SubscribeSessionEvents(gameyeClient GameyeClient, onStateChanged func(session.State)) (err error) {
 	ctx := context.Background()
-	url := fmt.Sprintf("%s/fetch/session", gameyeClient.config.Endpoint)
+	url := fmt.Sprintf("%s/query/session", gameyeClient.config.Endpoint)
 
 	session.SubscribeState("client.session.internal", onStateChanged)
 	decoder, err := eventstream.Create(ctx, url, nil, getStreamHeaders(gameyeClient.config))

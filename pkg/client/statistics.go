@@ -14,7 +14,7 @@ import (
 // SubscribeStatisticsEvents adds a subscriber to statistic events
 func SubscribeStatisticsEvents(gameyeClient GameyeClient, matchKey string, onStateChanged func(statistics.State)) (err error) {
 	ctx := context.Background()
-	url := fmt.Sprintf("%s/fetch/statistic", gameyeClient.config.Endpoint)
+	url := fmt.Sprintf("%s/query/statistic", gameyeClient.config.Endpoint)
 
 	statistics.SubscribeState("client.statistics.internal", onStateChanged)
 	decoder, err := eventstream.Create(
