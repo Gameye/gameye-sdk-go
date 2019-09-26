@@ -3,8 +3,8 @@ package client
 import (
 	"fmt"
 
+	messages "../messages/command"
 	"github.com/Gameye/messaging-client-go/pkg/command"
-	messages "github.com/Gameye/sdk-messages-go/pkg/command"
 )
 
 // StartMatch starts a new match with the given paramters
@@ -25,7 +25,7 @@ func StartMatch(client GameyeClient,
 			LocationKeys:   locationKeys,
 			TemplateKey:    templateKey,
 			Config:         config,
-			EndCallbackUrl: endCallbackURL,
+			EndCallbackURL: endCallbackURL,
 		},
 	}
 

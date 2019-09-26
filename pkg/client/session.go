@@ -6,9 +6,9 @@ import (
 	"io"
 	"log"
 
+	messages "../messages/event"
 	"./session"
 	"github.com/Gameye/messaging-client-go/pkg/eventstream"
-	"github.com/Gameye/sdk-messages-go/pkg/event"
 )
 
 // SubscribeSessionEvents adds a subscriber to session events
@@ -25,7 +25,7 @@ func SubscribeSessionEvents(gameyeClient GameyeClient, onStateChanged func(sessi
 
 	go func() {
 		for {
-			var action event.UnionEvent
+			var action messages.UnionEvent
 			err = decoder.Decode(&action)
 
 			if err == io.EOF {

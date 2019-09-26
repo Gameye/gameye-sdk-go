@@ -1,7 +1,7 @@
 package session
 
 import (
-	messages "github.com/Gameye/sdk-messages-go/pkg/event"
+	messages "../../messages/event"
 )
 
 // OnData is a callback type used for events

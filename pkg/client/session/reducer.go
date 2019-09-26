@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"log"
 
-	messages "github.com/Gameye/sdk-messages-go/pkg/event"
+	messages "../../messages/event"
 )
 
 func copyPorts(in *map[string]int64) (out map[string]int64) {
@@ -31,8 +31,8 @@ func reduce(state *State, action *messages.UnionEvent) State {
 
 		if err == nil {
 			for _, session := range sessionInit.Sessions {
-				sessions[session.Id] = Session{
-					ID:       session.Id,
+				sessions[session.ID] = Session{
+					ID:       session.ID,
 					Image:    session.Image,
 					Location: session.Location,
 					Host:     session.Host,
@@ -49,8 +49,8 @@ func reduce(state *State, action *messages.UnionEvent) State {
 		err = json.Unmarshal(*action.Payload, sessionStarted)
 
 		if err == nil {
-			sessions[sessionStarted.Session.Id] = Session{
-				ID:       sessionStarted.Session.Id,
+			sessions[sessionStarted.Session.ID] = Session{
+				ID:       sessionStarted.Session.ID,
 				Image:    sessionStarted.Session.Image,
 				Location: sessionStarted.Session.Location,
 				Host:     sessionStarted.Session.Host,
@@ -66,7 +66,7 @@ func reduce(state *State, action *messages.UnionEvent) State {
 		err = json.Unmarshal(*action.Payload, sessionStopped)
 
 		if err == nil {
-			delete(sessions, sessionStopped.Session.Id)
+			delete(sessions, sessionStopped.Session.ID)
 		} else {
 			log.Printf("session.reduce.session-stopped could not unmarshal; %v", err)
 		}
