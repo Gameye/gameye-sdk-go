@@ -1,0 +1,150 @@
+{
+  "statistic": {
+    "start": 1568637536000,
+    "stop": 1568637732000,
+    "startedRounds": 2,
+    "finishedRounds": 2,
+    "player": {
+      "3": {
+        "connected": false,
+        "playerKey": "3",
+        "uid": "BOT",
+        "name": "Wayne",
+        "statistic": {
+          "assist": 0,
+          "death": 2,
+          "kill": 1
+        }
+      },
+      "4": {
+        "connected": false,
+        "playerKey": "4",
+        "uid": "BOT",
+        "name": "Joe",
+        "statistic": {
+          "assist": 0,
+          "death": 2,
+          "kill": 1
+        }
+      },
+      "5": {
+        "connected": false,
+        "playerKey": "5",
+        "uid": "BOT",
+        "name": "John",
+        "statistic": {
+          "assist": 1,
+          "death": 1,
+          "kill": 4
+        }
+      },
+      "6": {
+        "connected": false,
+        "playerKey": "6",
+        "uid": "BOT",
+        "name": "Zane",
+        "statistic": {
+          "assist": 1,
+          "death": 2,
+          "kill": 0
+        }
+      },
+      "7": {
+        "connected": false,
+        "playerKey": "7",
+        "uid": "BOT",
+        "name": "Seth",
+        "statistic": {
+          "assist": 0,
+          "death": 1,
+          "kill": 2
+        }
+      },
+      "8": {
+        "connected": false,
+        "playerKey": "8",
+        "uid": "BOT",
+        "name": "Chet",
+        "statistic": {
+          "assist": 0,
+          "death": 2,
+          "kill": 2
+        }
+      },
+      "9": {
+        "connected": false,
+        "playerKey": "9",
+        "uid": "BOT",
+        "name": "Vladimir",
+        "statistic": {
+          "assist": 0,
+          "death": 1,
+          "kill": 0
+        }
+      },
+      "10": {
+        "connected": false,
+        "playerKey": "10",
+        "uid": "BOT",
+        "name": "Finn",
+        "statistic": {
+          "assist": 0,
+          "death": 2,
+          "kill": 1
+        }
+      },
+      "11": {
+        "connected": false,
+        "playerKey": "11",
+        "uid": "BOT",
+        "name": "Ivan",
+        "statistic": {
+          "assist": 0,
+          "death": 0,
+          "kill": 3
+        }
+      },
+      "12": {
+        "connected": false,
+        "playerKey": "12",
+        "uid": "BOT",
+        "name": "Rick",
+        "statistic": {
+          "assist": 0,
+          "death": 2,
+          "kill": 1
+        }
+      }
+    },
+    "team": {
+      "1": {
+        "teamKey": "1",
+        "name": "Counter Terrorists",
+        "statistic": {
+          "score": 1
+        },
+        "player": {
+          "3": true,
+          "5": true,
+          "7": true,
+          "9": true,
+          "11": true
+        }
+      },
+      "2": {
+        "teamKey": "2",
+        "name": "Terrorists",
+        "statistic": {
+          "score": 1
+        },
+        "player": {
+          "4": true,
+          "6": true,
+          "8": true,
+          "10": true,
+          "12": true
+        }
+      }
+    }
+  }
+}

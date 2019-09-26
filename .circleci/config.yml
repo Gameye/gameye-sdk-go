@@ -1,55 +1,37 @@
 version: 2
 
 jobs:
-  prepare:
-    docker: &docker_golang
-      - image: circleci/golang:1.10
-    environment:
-      GOPATH: /home/circleci/go
-    working_directory: /home/circleci/go/src/github.com/Gameye/gameye-sdk-node
-    steps:
-      - checkout
-      - run: dep ensure
-      - persist_to_workspace:
-          root: .
-          paths:
-            - vendor
-
-  lint:
-    docker: *docker_golang
-    environment:
-      GOPATH: /home/circleci/go
-    working_directory: /home/circleci/go/src/github.com/Gameye/gameye-sdk-node
+  lint-go:
+    docker: &docker_go
+      - image: circleci/golang:1.11
     steps:
       - checkout
       - run: go get golang.org/x/lint/golint
-      - run: ~/go/bin/golint -set_exit_status ./clients ./models ./selectors ./utils
+      - run: golint -set_exit_status ./pkg/...
 
-  spec:
-    docker: *docker_golang
-    environment:
-      GOPATH: /home/circleci/go
-    working_directory: /home/circleci/go/src/github.com/Gameye/gameye-sdk-node
+  test-go:
+    docker: *docker_go
     steps:
       - checkout
-      - attach_workspace: &attach_workspace
-          at: .
-      - run: go get github.com/jstemmer/go-junit-report
-      - run: mkdir -p /tmp/test-results
-      - run: go test -v -race ./clients ./models ./selectors ./utils | ~/go/bin/go-junit-report > /tmp/test-results/spec.xml
-      - store_test_results: &store_test_results
-          path: /tmp/test-results
+      - run: go get -t ./pkg/...
+      - run: go test -v ./pkg/...
+
+  vet-go:
+    docker: *docker_go
+    steps:
+      - checkout
+      - run: go get -t ./pkg/...
+      - run: go vet ./pkg/...
 
 workflows:
   version: 2
-  main:
+  go:
     jobs:
-      - prepare:
-          filters: &filter_all
+      - lint-go: &go_job
+          filters:
+            branches:
+              only: /.*?/
             tags:
               only: /.*?/
-      - lint:
-          filters: *filter_all
-      - spec:
-          requires: [ prepare ]
-          filters: *filter_all
+      - test-go: *go_job
+      - vet-go: *go_job

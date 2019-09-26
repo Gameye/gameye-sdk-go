@@ -1,0 +1,13 @@
+#!/bin/sh
+
+pushd pkg
+
+set -e
+
+go get -t ./...
+
+golint -set_exit_status ./...
+go vet ./...
+go test -v -race ./...
+
+popd
