@@ -29,7 +29,7 @@ func StartMatch(client GameyeClient,
 		},
 	}
 
-	url := fmt.Sprintf("%s/action/%s", client.config.Endpoint, action.Type)
+	url := fmt.Sprintf("%s/command/%s", client.config.Endpoint, action.Type)
 	err = command.Invoke(
 		url,
 		action.Payload,
@@ -48,7 +48,7 @@ func StopMatch(client GameyeClient, matchKey string) (err error) {
 		},
 	}
 
-	url := fmt.Sprintf("%s/action/%s", client.config.Endpoint, action.Type)
+	url := fmt.Sprintf("%s/command/%s", client.config.Endpoint, action.Type)
 	err = command.Invoke(
 		url,
 		action.Payload,

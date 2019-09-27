@@ -6,7 +6,7 @@ import (
 	"log"
 
 	"../patch"
-	"github.com/Gameye/gameye-sdk-go/utils"
+	"../utils"
 )
 
 func convertPath(inPath []interface{}) (outPath []string) {
